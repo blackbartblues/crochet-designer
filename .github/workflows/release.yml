@@ -15,7 +15,7 @@ jobs:
           - platform: ubuntu-22.04
             artifact_glob: 'src-tauri/target/release/bundle/{appimage,deb}/*.{AppImage,deb}'
           - platform: windows-latest
-            artifact_glob: 'src-tauri/target/release/bundle/{msi,nsis}/*.{msi,exe}'
+            artifact_glob: 'src-tauri/target/release/bundle/nsis/*.exe'
 
     runs-on: ${{ matrix.platform }}
 

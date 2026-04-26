@@ -1,6 +1,6 @@
 [package]
 name = "crochet-designer"
-version = "0.1.0"
+version = "0.1.1"
 description = "Wzornik Szydełkowy — desktop app for crochet pattern design"
 authors = ["GreenCatStudio"]
 edition = "2021"

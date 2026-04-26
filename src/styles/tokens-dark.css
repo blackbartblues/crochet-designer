@@ -1,0 +1,65 @@
+/* ============================================================
+   Dark theme overrides — applied via [data-theme="dark"] on <html>
+   Yarn colors stay unchanged (they're real yarn). We darken
+   surfaces and lighten ink for evening crochet sessions.
+   ============================================================ */
+
+[data-theme="dark"] {
+  /* Surfaces — deep warm charcoal */
+  --bg-page: #1F1813;
+  --bg-paper: #28201A;
+  --bg-elevated: #322821;
+  --bg-sunken: #1A140F;
+  --bg-hover: #3A3028;
+  --bg-active: #4A3B30;
+
+  /* Ink — warm cream on dark */
+  --ink-deep: #F5EDE0;
+  --ink-body: #D4C8B8;
+  --ink-muted: #9A8B7A;
+  --ink-subtle: #6E6258;
+  --ink-inverse: #1F1813;
+
+  /* Accents stay close — terracotta works on both themes */
+  --accent-terracotta: #D88B5F;
+  --accent-terracotta-hover: #E89E73;
+  --accent-terracotta-soft: rgba(216, 139, 95, 0.18);
+  --accent-sage: #8FA889;
+  --accent-sage-soft: rgba(143, 168, 137, 0.18);
+  --accent-gold: #E0B96E;
+  --accent-gold-soft: rgba(224, 185, 110, 0.18);
+
+  /* Borders */
+  --border-hairline: #3A3028;
+  --border-soft: #4A3D32;
+  --border-medium: #6E5C48;
+  --border-strong: #9A8B7A;
+
+  /* Grid */
+  --grid-line: #3A3028;
+  --grid-line-major: #6E5C48;
+  --grid-cell-empty: #28201A;
+
+  /* Status */
+  --color-danger: #E06464;
+  --color-success: #82B070;
+
+  /* Shadows — softer in dark mode */
+  --shadow-hairline: 0 0 0 1px rgba(0, 0, 0, 0.3);
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.18);
+  --shadow-paper: 0 2px 4px rgba(0, 0, 0, 0.3), 0 12px 28px rgba(0, 0, 0, 0.35);
+  --shadow-pressed: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-focus: 0 0 0 3px rgba(216, 139, 95, 0.35);
+}
+
+[data-theme="dark"] body {
+  background-image:
+    radial-gradient(circle at 25% 10%, rgba(216, 139, 95, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(143, 168, 137, 0.04) 0%, transparent 50%),
+    var(--bg-page);
+}
+
+/* The terracotta gradient on brush bar is too saturated in dark mode */
+[data-theme="dark"] .brush-bar {
+  background: linear-gradient(180deg, rgba(216, 139, 95, 0.12) 0%, transparent 100%);
+}

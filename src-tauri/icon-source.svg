@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Rounded background -->
+  <rect width="1024" height="1024" rx="200" ry="200" fill="#C8794D"/>
+
+  <!-- Yarn ball — white lines on terracotta -->
+  <g transform="translate(512, 512)" fill="none" stroke="#FFFCF6" stroke-width="32" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="0" r="320"/>
+    <!-- Cross strands -->
+    <path d="M -300 -130 C -120 80, 120 80, 300 -130"/>
+    <path d="M -300 130 C -120 -80, 120 -80, 300 130"/>
+    <path d="M -130 -300 C 80 -120, 80 120, -130 300"/>
+    <path d="M 130 -300 C -80 -120, -80 120, 130 300"/>
+  </g>
+</svg>

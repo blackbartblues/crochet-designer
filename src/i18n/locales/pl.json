@@ -1,0 +1,146 @@
+{
+  "brand": {
+    "name": "Wzornik",
+    "tagline": "Szydełkowy"
+  },
+  "topbar": {
+    "language": "Język",
+    "darkMode": "Tryb ciemny",
+    "lightMode": "Tryb jasny",
+    "settings": "Ustawienia",
+    "help": "Pomoc",
+    "stats_unsaved": " · niezapisane",
+    "stats_dim": "{{cols}} × {{rows}} oczek"
+  },
+  "toolbar": {
+    "new": "Nowy",
+    "open": "Otwórz",
+    "save": "Zapisz",
+    "saving": "Zapisuję...",
+    "export": "Eksport",
+    "exporting": "Eksportuję...",
+    "undo": "Cofnij",
+    "redo": "Powtórz",
+    "clearRow": "Wyczyść wiersz",
+    "tooltip_new": "Nowy wzór (Ctrl+N)",
+    "tooltip_open": "Otwórz wzór (Ctrl+O)",
+    "tooltip_save": "Zapisz wzór (Ctrl+S)",
+    "tooltip_export": "Eksport do Excela (Ctrl+E)",
+    "tooltip_undo": "Cofnij (Ctrl+Z)",
+    "tooltip_redo": "Powtórz (Ctrl+Y)"
+  },
+  "palette": {
+    "stitches": "Sploty",
+    "stitches_hint": "notacja US",
+    "yarns": "Włóczki",
+    "yarns_hint": "kolor tła oczka",
+    "addColor": "Dodaj nowy kolor",
+    "displayMode": {
+      "symbol": "Symbol",
+      "code": "Skrót",
+      "both": "Oba"
+    }
+  },
+  "brush": {
+    "label": "Aktywny pędzel",
+    "cursor": "Kursor:",
+    "cursorPos": "Wiersz {{row}} · Oczko {{col}}",
+    "hint_placeStitch": "wstawia oczko",
+    "hint_newRow": "nowy wiersz",
+    "hint_delete": "usuwa"
+  },
+  "grid": {
+    "addRow": "Dodaj nowy wiersz",
+    "rowDirection_rtl": "P→L",
+    "rowDirection_ltr": "L→P",
+    "rowDirection_tooltip": "Zmień kierunek czytania wiersza"
+  },
+  "status": {
+    "ready": "Gotowy do pracy",
+    "savedRecents": "Zapisanych wzorów: {{count}}",
+    "allSaved": "Wszystko zapisane",
+    "savedAt": "Zapisano · {{time}}",
+    "pattern": "Wzór",
+    "totalStitches": "Oczek razem",
+    "rows": "Wierszy",
+    "colors": "Kolorów",
+    "zoom": "Powiększenie"
+  },
+  "empty": {
+    "title": "Witaj w",
+    "subtitle": "Twórz, edytuj i zapisuj wzory szydełkowe na własnych zasadach. Zacznij od pustej kartki albo wczytaj jeden ze swoich poprzednich wzorów.",
+    "createNew": "Stwórz nowy wzór",
+    "openFromDisk": "Otwórz z dysku",
+    "recentTitle": "Ostatnie wzory",
+    "patternStat": "{{cols}} × {{rows}} oczek · {{when}}"
+  },
+  "color": {
+    "base": "bazowy",
+    "edit": "Edytuj kolor",
+    "editAria": "Edytuj kolor {{name}}",
+    "remove": "Usuń kolor",
+    "inUseWarn": "Kolor jest używany — najpierw zamaluj komórki innym kolorem.",
+    "pickerTitle": "Wybór koloru",
+    "presetsLabel": "Paleta kolorów",
+    "newColorName": "Nowy kolor"
+  },
+  "dialog": {
+    "ok": "OK",
+    "cancel": "Anuluj",
+    "discard": "Odrzuć",
+    "discardAndClose": "Odrzuć i zamknij",
+    "saveAndContinue": "Zapisz i kontynuuj",
+    "saveAndClose": "Zapisz i zamknij",
+    "unsavedTitle": "Niezapisane zmiany",
+    "unsavedMessage": "Masz niezapisane zmiany w bieżącym wzorze. Co chcesz zrobić?",
+    "errorTitle": "Błąd",
+    "successTitle": "Gotowe",
+    "exportSuccess": "Wyeksportowano do {{path}}",
+    "openErrorTitle": "Nie udało się otworzyć wzoru"
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "paths": "Domyślne ścieżki",
+    "shortcuts": "Skróty klawiszowe",
+    "defaultSavePath": "Domyślny folder zapisu wzorów",
+    "defaultExportPath": "Domyślny folder eksportu Excel",
+    "defaultPathSystem": "(systemowy: Dokumenty/Wzornik)",
+    "browse": "Przeglądaj",
+    "reset": "Reset",
+    "resetToDefault": "Przywróć domyślny",
+    "pickSavePath": "Wybierz folder zapisu",
+    "pickExportPath": "Wybierz folder eksportu",
+    "clickToRecord": "Kliknij i wciśnij klawisz",
+    "pressKey": "Wciśnij klawisz..."
+  },
+  "shortcuts": {
+    "title": "Skróty klawiszowe",
+    "cat_editing": "Edycja",
+    "cat_file": "Plik",
+    "cat_navigation": "Nawigacja",
+    "place": "Wstaw oczko (aktywny pędzel)",
+    "clearCell": "Usuń oczko z bieżącej komórki",
+    "newRow": "Nowy wiersz",
+    "undo": "Cofnij",
+    "redo": "Powtórz",
+    "save": "Zapisz",
+    "open": "Otwórz",
+    "new": "Nowy wzór",
+    "export": "Eksport do Excel",
+    "cursor": "Ruch kursora",
+    "selectStitch": "Wybór splotu (1=ch, 2=sl st, 3=sc, 4=hdc, 5=dc, 6=tr, 7=dtr, 8=inc, 9=dec)",
+    "closePicker": "Zamknij okno koloru"
+  },
+  "time": {
+    "justNow": "przed chwilą",
+    "minutes": "{{count}} min temu",
+    "hours": "{{count}} h temu",
+    "yesterday": "wczoraj",
+    "days": "{{count}} dni temu",
+    "weekOne": "tydzień temu",
+    "weeks": "{{count}} tyg. temu",
+    "monthOne": "miesiąc temu",
+    "months": "{{count}} mies. temu",
+    "years": "{{count}} lat temu"
+  }
+}

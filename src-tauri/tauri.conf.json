@@ -1,0 +1,63 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Wzornik Szydełkowy",
+  "version": "0.1.0",
+  "identifier": "com.greencatstudio.wzornik",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Wzornik Szydełkowy",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 960,
+        "minHeight": 640,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["appimage", "deb", "msi", "nsis"],
+    "category": "GraphicsAndDesign",
+    "shortDescription": "Wzornik Szydełkowy — projektant wzorów do szydełkowania",
+    "longDescription": "Wzornik Szydełkowy to desktopowa aplikacja do projektowania, edycji i eksportowania wzorów szydełkowych. Tworzy siatkę oczek z możliwością wyboru splotów (notacja US) i kolorów włóczki. Eksport do Excela.",
+    "copyright": "© 2026 GreenCatStudio",
+    "homepage": "https://github.com/greencatstudio/crochet-designer",
+    "publisher": "GreenCatStudio",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "linux": {
+      "deb": {
+        "depends": ["libwebkit2gtk-4.1-0", "libgtk-3-0"],
+        "section": "graphics"
+      },
+      "appimage": {
+        "bundleMediaFramework": false
+      }
+    },
+    "windows": {
+      "wix": {
+        "language": ["en-US", "pl-PL"]
+      },
+      "nsis": {
+        "installerIcon": "icons/icon.ico",
+        "installMode": "perMachine",
+        "languages": ["English", "Polish"]
+      }
+    }
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "brand": {
+    "name": "Crochet",
+    "tagline": "Designer"
+  },
+  "topbar": {
+    "language": "Language",
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode",
+    "settings": "Settings",
+    "help": "Help",
+    "stats_unsaved": " · unsaved",
+    "stats_dim": "{{cols}} × {{rows}} stitches"
+  },
+  "toolbar": {
+    "new": "New",
+    "open": "Open",
+    "save": "Save",
+    "saving": "Saving...",
+    "export": "Export",
+    "exporting": "Exporting...",
+    "undo": "Undo",
+    "redo": "Redo",
+    "clearRow": "Clear row",
+    "tooltip_new": "New pattern (Ctrl+N)",
+    "tooltip_open": "Open pattern (Ctrl+O)",
+    "tooltip_save": "Save pattern (Ctrl+S)",
+    "tooltip_export": "Export to Excel (Ctrl+E)",
+    "tooltip_undo": "Undo (Ctrl+Z)",
+    "tooltip_redo": "Redo (Ctrl+Y)"
+  },
+  "palette": {
+    "stitches": "Stitches",
+    "stitches_hint": "US notation",
+    "yarns": "Yarns",
+    "yarns_hint": "cell background color",
+    "addColor": "Add new color",
+    "displayMode": {
+      "symbol": "Symbol",
+      "code": "Code",
+      "both": "Both"
+    }
+  },
+  "brush": {
+    "label": "Active brush",
+    "cursor": "Cursor:",
+    "cursorPos": "Row {{row}} · Stitch {{col}}",
+    "hint_placeStitch": "place stitch",
+    "hint_newRow": "new row",
+    "hint_delete": "delete"
+  },
+  "grid": {
+    "addRow": "Add new row",
+    "rowDirection_rtl": "R→L",
+    "rowDirection_ltr": "L→R",
+    "rowDirection_tooltip": "Toggle row reading direction"
+  },
+  "status": {
+    "ready": "Ready",
+    "savedRecents": "Saved patterns: {{count}}",
+    "allSaved": "All saved",
+    "savedAt": "Saved · {{time}}",
+    "pattern": "Pattern",
+    "totalStitches": "Total stitches",
+    "rows": "Rows",
+    "colors": "Colors",
+    "zoom": "Zoom"
+  },
+  "empty": {
+    "title": "Welcome to",
+    "subtitle": "Create, edit and save crochet patterns on your own terms. Start from a blank slate or load one of your previous patterns.",
+    "createNew": "Create new pattern",
+    "openFromDisk": "Open from disk",
+    "recentTitle": "Recent patterns",
+    "patternStat": "{{cols}} × {{rows}} stitches · {{when}}"
+  },
+  "color": {
+    "base": "base",
+    "edit": "Edit color",
+    "editAria": "Edit color {{name}}",
+    "remove": "Remove color",
+    "inUseWarn": "This color is in use — repaint the cells with another color first.",
+    "pickerTitle": "Pick a color",
+    "presetsLabel": "Color palette",
+    "newColorName": "New color"
+  },
+  "dialog": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "discard": "Discard",
+    "discardAndClose": "Discard and close",
+    "saveAndContinue": "Save and continue",
+    "saveAndClose": "Save and close",
+    "unsavedTitle": "Unsaved changes",
+    "unsavedMessage": "You have unsaved changes in the current pattern. What would you like to do?",
+    "errorTitle": "Error",
+    "successTitle": "Done",
+    "exportSuccess": "Exported to {{path}}",
+    "openErrorTitle": "Failed to open pattern"
+  },
+  "settings": {
+    "title": "Settings",
+    "paths": "Default paths",
+    "shortcuts": "Keyboard shortcuts",
+    "defaultSavePath": "Default pattern save folder",
+    "defaultExportPath": "Default Excel export folder",
+    "defaultPathSystem": "(system: Documents/Wzornik)",
+    "browse": "Browse",
+    "reset": "Reset",
+    "resetToDefault": "Reset to default",
+    "pickSavePath": "Choose save folder",
+    "pickExportPath": "Choose export folder",
+    "clickToRecord": "Click and press a key",
+    "pressKey": "Press a key..."
+  },
+  "shortcuts": {
+    "title": "Keyboard shortcuts",
+    "cat_editing": "Editing",
+    "cat_file": "File",
+    "cat_navigation": "Navigation",
+    "place": "Place stitch (active brush)",
+    "clearCell": "Delete stitch from current cell",
+    "newRow": "New row",
+    "undo": "Undo",
+    "redo": "Redo",
+    "save": "Save",
+    "open": "Open",
+    "new": "New pattern",
+    "export": "Export to Excel",
+    "cursor": "Move cursor",
+    "selectStitch": "Select stitch (1=ch, 2=sl st, 3=sc, 4=hdc, 5=dc, 6=tr, 7=dtr, 8=inc, 9=dec)",
+    "closePicker": "Close color picker"
+  },
+  "time": {
+    "justNow": "just now",
+    "minutes": "{{count}} min ago",
+    "hours": "{{count}} h ago",
+    "yesterday": "yesterday",
+    "days": "{{count}} days ago",
+    "weekOne": "1 week ago",
+    "weeks": "{{count}} weeks ago",
+    "monthOne": "1 month ago",
+    "months": "{{count}} months ago",
+    "years": "{{count}} years ago"
+  }
+}

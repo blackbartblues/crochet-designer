@@ -58,10 +58,42 @@ Wszystkie powyższe skróty można zmienić w **Ustawieniach** (ikona koła zęb
 
 ## Format pliku
 
-Wzory zapisywane są jako pliki `.wzor` (czytelny JSON z `schemaVersion: 1`).
+Wzory zapisywane są jako pliki `.wzor` (czytelny JSON, aktualnie `schemaVersion: 2`).
+Pliki w starszym formacie `schemaVersion: 1` są wczytywane bez problemu — są automatycznie migrowane przy zapisie.
+
 Eksport do Excela tworzy plik `.xlsx` z dwoma arkuszami:
 - **Pattern** — siatka oczek z kolorami i kodami splotów
-- **Legend** — legenda kolorów i splotów (po angielsku, gotowa do importu w innych systemach)
+- **Legend** — legenda kolorów i splotów (po angielsku + niestandardowe sploty zdefiniowane przez użytkownika)
+
+### Niestandardowe sploty
+
+W palecie splotów, po wbudowanych ściegach (`ch`, `sc`, `dc`, …) znajduje się kafelek z `+`. Po kliknięciu otwiera się okno biblioteki znaków, w którym można:
+1. Wybrać symbol z biblioteki (~50 symboli z różnych dziedzin: zaawansowane szydełkowanie, dziewiarstwo, haft krzyżykowy, haft, geometria, motywy ozdobne).
+2. Przypisać własny skrót literowy (1–3 litery; sprawdzana kolizja z wbudowanymi splotami i innymi custom).
+3. Opcjonalnie podać polską / angielską nazwę.
+
+Niestandardowe sploty zapisywane są wewnątrz pliku `.wzor` — wzór jest przenośny między komputerami nawet jeśli używa własnych znaków.
+
+## Generowanie wzorów z LLM
+
+Wzór `.wzor` to deklaratywny JSON — model językowy (Claude, ChatGPT, lokalny LLM) potrafi go wygenerować, jeśli ma dwa pliki kontekstowe:
+
+- **`docs/LLM_PATTERN_GUIDE.md`** — pełny opis formatu, niezmienników, listy splotów wbudowanych, ID symboli z biblioteki i lista najczęstszych błędów.
+- **`examples/*.wzor`** — gotowe wzory startowe do skopiowania i modyfikacji:
+  - `scarf-stripes.wzor` — szalik 10×8 w trzech kolorowych pasach
+  - `square-sampler.wzor` — próbnik wszystkich 9 wbudowanych splotów (6×6)
+  - `motif-heart.wzor` — motyw serca 9×9 (dwa kolory)
+  - `custom-stitch-demo.wzor` — pokazuje jak custom stitches z biblioteki + bez biblioteki wyglądają w pliku
+
+**Typowy workflow:**
+
+```
+> Przeczytaj docs/LLM_PATTERN_GUIDE.md i examples/scarf-stripes.wzor.
+> Stwórz dla mnie szalik 12×30 oczek, na przemian rzędy fioletowe i mietowe,
+> co 4. rząd jeden custom stitch X. Zapisz jako moj-szalik.wzor.
+```
+
+LLM zwraca cały plik jako JSON. Zapisz go z rozszerzeniem `.wzor` i otwórz w aplikacji (`Ctrl+O`). Aplikacja waliduje plik przy otwarciu i pokaże konkretny błąd jeśli LLM się pomylił — wystarczy wkleić błąd z powrotem do LLM-a do poprawki.
 
 ## Domyślne lokalizacje
 

@@ -318,6 +318,71 @@
   font-weight: 500;
 }
 
+/* Custom stitches: divider + add tile + delete overlay */
+.palette-divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--border-hairline);
+  margin: 4px 4px;
+  flex-shrink: 0;
+}
+
+.stitch-btn--custom {
+  padding: 0;
+  display: inline-flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.stitch-btn--custom .stitch-btn-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--space-2) var(--space-3);
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-radius: inherit;
+}
+
+.stitch-btn-delete {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-hairline);
+  color: var(--ink-muted);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.stitch-btn--custom:hover .stitch-btn-delete,
+.stitch-btn--custom:focus-within .stitch-btn-delete {
+  opacity: 1;
+}
+
+.stitch-btn-delete:hover {
+  color: var(--accent-terracotta);
+  border-color: var(--accent-terracotta);
+}
+
+.stitch-btn--add {
+  border-style: dashed;
+  color: var(--ink-muted);
+}
+
+.stitch-btn--add:hover {
+  border-color: var(--accent-terracotta);
+  color: var(--accent-terracotta);
+  border-style: dashed;
+}
+
 .display-toggle {
   display: flex;
   background: var(--bg-sunken);
@@ -766,10 +831,11 @@
 .brush-preview svg {
   width: 60%;
   height: 60%;
-  color: var(--ink-deep);
+  /* Same fix as .cell — contrast must follow yarn color, not page theme. */
+  color: #2A1F18;
 }
 
-.brush-preview.dark svg { color: var(--ink-inverse); }
+.brush-preview.dark svg { color: #FFFCF6; }
 
 .brush-info {
   display: flex;
@@ -947,11 +1013,14 @@
 .cell svg {
   width: 70%;
   height: 70%;
-  color: var(--ink-deep);
+  /* Symbol contrast is driven by the YARN background color (per-cell), not by the
+     page theme. Tokens like --ink-deep flip in dark mode and would make symbols
+     invisible on cream yarns. Use fixed values instead. */
+  color: #2A1F18;
   pointer-events: none;
 }
 
-.cell.dark svg { color: var(--ink-inverse); }
+.cell.dark svg { color: #FFFCF6; }
 
 .row-direction {
   display: flex;
@@ -1263,6 +1332,198 @@
 .modal-btn-ghost:hover {
   color: var(--ink-deep);
   background: var(--bg-hover);
+}
+
+.modal-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== Add custom stitch dialog ===== */
+.modal-card--wide {
+  max-width: 760px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.custom-stitch-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.custom-stitch-form-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.8fr) 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.custom-stitch-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.custom-stitch-field-label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.custom-stitch-field-help {
+  font-size: var(--fs-xs);
+  color: var(--ink-muted);
+}
+
+.custom-stitch-field-error {
+  font-size: var(--fs-xs);
+  color: var(--color-danger);
+}
+
+.custom-stitch-input {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-sm);
+  background: var(--bg-base);
+  color: var(--ink-deep);
+  font-size: var(--fs-sm);
+  font-family: inherit;
+}
+
+.custom-stitch-input:focus {
+  outline: none;
+  border-color: var(--accent-terracotta);
+}
+
+.custom-stitch-library {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  background: var(--bg-sunken);
+}
+
+.custom-stitch-library-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.custom-stitch-library-toolbar .custom-stitch-input {
+  flex: 1;
+}
+
+.custom-stitch-library-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.category-chip {
+  padding: 4px var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-hairline);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--ink-muted);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.category-chip:hover {
+  border-color: var(--accent-terracotta);
+  color: var(--ink-deep);
+}
+
+.category-chip.is-active {
+  background: var(--accent-terracotta);
+  color: var(--ink-inverse);
+  border-color: var(--accent-terracotta);
+}
+
+.custom-stitch-library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: var(--space-2);
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.custom-stitch-library-empty {
+  font-size: var(--fs-sm);
+  color: var(--ink-muted);
+  padding: var(--space-3);
+  text-align: center;
+}
+
+.library-symbol-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--space-2);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.library-symbol-tile svg {
+  width: 28px;
+  height: 28px;
+  color: var(--ink-deep);
+}
+
+.library-symbol-tile:hover {
+  border-color: var(--accent-terracotta);
+  box-shadow: var(--shadow-soft);
+}
+
+.library-symbol-tile.is-active {
+  background: var(--accent-terracotta);
+  border-color: var(--accent-terracotta);
+  color: var(--ink-inverse);
+}
+
+.library-symbol-tile.is-active svg { color: var(--ink-inverse); }
+.library-symbol-tile.is-active .library-symbol-label { color: rgba(255, 252, 246, 0.85); }
+
+.library-symbol-label {
+  font-size: 10px;
+  color: var(--ink-muted);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.custom-stitch-delete-options {
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+}
+
+.custom-stitch-radio {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--ink-body);
+}
+
+.custom-stitch-radio input[type="radio"] {
+  margin: 0;
+}
+
+.custom-stitch-radio select {
+  margin-left: var(--space-2);
+}
+
+@media (max-width: 720px) {
+  .custom-stitch-form-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ===== Settings dialog ===== */

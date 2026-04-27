@@ -25,5 +25,6 @@ dist-ssr
 
 # Project-specific
 *.wzor
+!examples/*.wzor
 src-tauri/icon-1024.png
 coverage/

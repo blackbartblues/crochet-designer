@@ -1,9 +1,9 @@
 import { create } from 'zustand';
-import type { StitchKey, DisplayMode } from '../domain/stitches';
+import type { AnyStitchKey, DisplayMode } from '../domain/stitches';
 import type { ColorId } from '../domain/colors';
 
 interface UiState {
-  selectedStitch: StitchKey;
+  selectedStitch: AnyStitchKey;
   selectedColorId: ColorId;
   displayMode: DisplayMode;
   /** When non-null, the color picker popover is open for this color. */
@@ -12,7 +12,7 @@ interface UiState {
   theme: 'light' | 'dark';
 
   // Actions
-  setStitch: (key: StitchKey) => void;
+  setStitch: (key: AnyStitchKey) => void;
   setColorId: (id: ColorId) => void;
   setDisplayMode: (mode: DisplayMode) => void;
   openPicker: (id: ColorId) => void;

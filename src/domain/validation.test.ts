@@ -82,3 +82,102 @@ describe('parsePatternJson rejection cases', () => {
     expect(() => parsePatternJson(JSON.stringify({ schemaVersion: 1 }))).toThrow(PatternFileError);
   });
 });
+
+describe('schemaVersion 1 → 2 migration', () => {
+  function v1Pattern() {
+    const v2 = createEmptyPattern('Migrated', 4);
+    // Strip v2-only fields and downgrade schemaVersion
+    const { customStitches: _drop, ...rest } = v2;
+    return { ...rest, schemaVersion: 1 as const };
+  }
+
+  it('accepts a valid v1 file and migrates it to v2', () => {
+    const parsed = parsePatternJson(JSON.stringify(v1Pattern()));
+    expect(parsed.schemaVersion).toBe(2);
+    expect(parsed.customStitches).toEqual([]);
+  });
+
+  it('preserves rows, colors, and displayMode through migration', () => {
+    const orig = v1Pattern();
+    const parsed = parsePatternJson(JSON.stringify(orig));
+    expect(parsed.rows).toEqual(orig.rows);
+    expect(parsed.colors).toEqual(orig.colors);
+    expect(parsed.displayMode).toBe(orig.displayMode);
+  });
+
+  it('migration is idempotent (re-serializing yields v2)', () => {
+    const v1Json = JSON.stringify(v1Pattern());
+    const once = parsePatternJson(v1Json);
+    const twice = parsePatternJson(serializePattern(once));
+    expect(twice.schemaVersion).toBe(2);
+    expect(twice).toEqual(once);
+  });
+});
+
+describe('custom stitches in v2 schema', () => {
+  it('accepts a pattern with valid customStitches', () => {
+    const p = createEmptyPattern('Custom', 3);
+    p.customStitches.push({
+      key: 'custom:abc',
+      code: 'X',
+      labelPl: 'mój',
+      labelEn: 'mine',
+      createdAt: new Date().toISOString(),
+    });
+    const round = parsePatternJson(serializePattern(p));
+    expect(round.customStitches.length).toBe(1);
+    expect(round.customStitches[0]?.code).toBe('X');
+  });
+
+  it('rejects duplicate custom keys', () => {
+    const p = createEmptyPattern('T', 3);
+    const now = new Date().toISOString();
+    p.customStitches.push(
+      { key: 'custom:abc', code: 'X', createdAt: now },
+      { key: 'custom:abc', code: 'Y', createdAt: now },
+    );
+    expect(() => parsePatternJson(serializePattern(p))).toThrow(/Zduplikowany klucz/);
+  });
+
+  it('rejects custom code colliding with built-in', () => {
+    const p = createEmptyPattern('T', 3);
+    p.customStitches.push({
+      key: 'custom:abc',
+      code: 'sc',
+      createdAt: new Date().toISOString(),
+    });
+    expect(() => parsePatternJson(serializePattern(p))).toThrow(/koliduje z wbudowanym/);
+  });
+
+  it('rejects duplicate custom codes', () => {
+    const p = createEmptyPattern('T', 3);
+    const now = new Date().toISOString();
+    p.customStitches.push(
+      { key: 'custom:a', code: 'X', createdAt: now },
+      { key: 'custom:b', code: 'x', createdAt: now }, // case-insensitive collision
+    );
+    expect(() => parsePatternJson(serializePattern(p))).toThrow(/Zduplikowany skrót/);
+  });
+
+  it('clears orphaned custom-stitch references in cells (does not throw)', () => {
+    const p = createEmptyPattern('T', 3);
+    // No customStitches declared, but a cell references custom:ghost
+    p.rows[0]!.cells[0] = { stitch: 'custom:ghost' as never, colorId: 'base' };
+    const report = { orphanedCellsCleared: 0 };
+    const parsed = parsePatternJson(serializePattern(p), report);
+    expect(report.orphanedCellsCleared).toBe(1);
+    expect(parsed.rows[0]?.cells[0]).toBeNull();
+  });
+
+  it('strips unknown symbolRef values (renderer falls back)', () => {
+    const p = createEmptyPattern('T', 3);
+    p.customStitches.push({
+      key: 'custom:abc',
+      code: 'X',
+      symbolRef: 'lib-does-not-exist',
+      createdAt: new Date().toISOString(),
+    });
+    const parsed = parsePatternJson(serializePattern(p));
+    expect(parsed.customStitches[0]?.symbolRef).toBeUndefined();
+  });
+});

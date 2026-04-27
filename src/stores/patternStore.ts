@@ -2,7 +2,14 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { current } from 'immer';
 import type { Pattern, Cursor, RowDirection, CellContent } from '../domain/pattern';
-import type { StitchKey, DisplayMode } from '../domain/stitches';
+import type {
+  AnyStitchKey,
+  BuiltInStitchKey,
+  CustomStitchKey,
+  CustomStitchMeta,
+  DisplayMode,
+} from '../domain/stitches';
+import { generateCustomStitchKey } from '../domain/stitches';
 import type { YarnColor, ColorId } from '../domain/colors';
 import { createEmptyPattern, createEmptyRow, flipDirection } from '../domain/pattern';
 import { newId } from '../utils/id';
@@ -26,7 +33,7 @@ interface PatternState {
   closePattern: () => void;
 
   // ===== Cell editing =====
-  paintCell: (row: number, col: number, stitch: StitchKey, colorId: ColorId) => void;
+  paintCell: (row: number, col: number, stitch: AnyStitchKey, colorId: ColorId) => void;
   clearCell: (row: number, col: number) => void;
   setCursor: (row: number, col: number) => void;
   advanceCursor: () => void;
@@ -42,6 +49,22 @@ interface PatternState {
   removeColor: (id: ColorId) => void;
   /** True if the color is referenced by any cell in the current pattern. */
   isColorInUse: (id: ColorId) => boolean;
+
+  // ===== Custom stitch CRUD =====
+  /** Adds a new custom stitch to the pattern. Returns its generated key. */
+  addCustomStitch: (
+    meta: Omit<CustomStitchMeta, 'key' | 'createdAt'>,
+  ) => CustomStitchKey;
+  /**
+   * Removes a custom stitch and either clears or replaces every cell that referenced it.
+   * Atomic in undo history (single snapshot).
+   */
+  removeCustomStitch: (
+    key: CustomStitchKey,
+    replacement: BuiltInStitchKey | null,
+  ) => void;
+  /** Number of cells in the current pattern that reference the given custom key. */
+  countCustomStitchUsage: (key: CustomStitchKey) => number;
 
   // ===== Pattern meta =====
   renamePattern: (name: string) => void;
@@ -270,6 +293,60 @@ export const usePatternStore = create<PatternState>()(
       const p = get().pattern;
       if (!p) return false;
       return p.rows.some((r) => r.cells.some((c) => c?.colorId === id));
+    },
+
+    // ===== Custom stitch CRUD =====
+    addCustomStitch: (meta) => {
+      const key = generateCustomStitchKey();
+      set((s) => {
+        if (!s.pattern) return;
+        pushHistory(s);
+        const now = new Date().toISOString();
+        s.pattern.customStitches.push({
+          key,
+          code: meta.code,
+          labelPl: meta.labelPl,
+          labelEn: meta.labelEn,
+          symbolRef: meta.symbolRef,
+          createdAt: now,
+        });
+      });
+      return key;
+    },
+
+    removeCustomStitch: (key, replacement) =>
+      set((s) => {
+        if (!s.pattern) return;
+        const idx = s.pattern.customStitches.findIndex((c) => c.key === key);
+        if (idx === -1) return;
+        pushHistory(s);
+        s.pattern.customStitches.splice(idx, 1);
+        // Walk every cell once and clear / replace.
+        for (const row of s.pattern.rows) {
+          for (let i = 0; i < row.cells.length; i++) {
+            const cell = row.cells[i];
+            if (!cell) continue;
+            if (cell.stitch === key) {
+              if (replacement === null) {
+                row.cells[i] = null;
+              } else {
+                row.cells[i] = { stitch: replacement, colorId: cell.colorId };
+              }
+            }
+          }
+        }
+      }),
+
+    countCustomStitchUsage: (key) => {
+      const p = get().pattern;
+      if (!p) return 0;
+      let count = 0;
+      for (const r of p.rows) {
+        for (const c of r.cells) {
+          if (c && c.stitch === key) count++;
+        }
+      }
+      return count;
     },
 
     // ===== Pattern meta =====

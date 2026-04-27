@@ -8,6 +8,8 @@ import { StitchPalette } from '../components/palette/StitchPalette';
 import { ColorPalette } from '../components/palette/ColorPalette';
 import { Canvas } from '../components/grid/Canvas';
 import { ConfirmDialog } from '../components/dialogs/ConfirmDialog';
+import { AddCustomStitchDialog } from '../components/dialogs/AddCustomStitchDialog';
+import { DeleteCustomStitchDialog } from '../components/dialogs/DeleteCustomStitchDialog';
 import { usePatternStore, selectCanUndo, selectCanRedo } from '../stores/patternStore';
 import { useUiStore } from '../stores/uiStore';
 import { useRecentStore } from '../stores/recentStore';
@@ -15,6 +17,8 @@ import { useSettingsStore } from '../stores/settingsStore';
 import { countStitches } from '../domain/pattern';
 import { BASE_COLOR } from '../domain/colors';
 import type { ColorId } from '../domain/colors';
+import type { CustomStitchKey } from '../domain/stitches';
+import { isCustomStitch } from '../domain/stitches';
 import { savePattern, openPattern } from '../services/fileIo';
 import { exportPatternToXlsx } from '../services/excelExport';
 
@@ -62,6 +66,10 @@ export function EditorView({ onOpenSettings, onOpenShortcuts }: EditorViewProps 
   const removeColor = usePatternStore((s) => s.removeColor);
   const isColorInUse = usePatternStore((s) => s.isColorInUse);
 
+  const addCustomStitch = usePatternStore((s) => s.addCustomStitch);
+  const removeCustomStitch = usePatternStore((s) => s.removeCustomStitch);
+  const countCustomStitchUsage = usePatternStore((s) => s.countCustomStitchUsage);
+
   const addRecent = useRecentStore((s) => s.add);
   const defaultSavePath = useSettingsStore((s) => s.defaultSavePath);
   const defaultExportPath = useSettingsStore((s) => s.defaultExportPath);
@@ -71,6 +79,8 @@ export function EditorView({ onOpenSettings, onOpenShortcuts }: EditorViewProps 
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [showAddCustom, setShowAddCustom] = useState(false);
+  const [pendingDeleteCustom, setPendingDeleteCustom] = useState<CustomStitchKey | null>(null);
 
   // Keep selectedColorId valid: if the active color is removed, fall back to base.
   useEffect(() => {
@@ -79,6 +89,16 @@ export function EditorView({ onOpenSettings, onOpenShortcuts }: EditorViewProps 
       setColorId('base');
     }
   }, [pattern, colorId, setColorId]);
+
+  // Keep selectedStitch valid: if the user picked a custom stitch and it gets
+  // removed (or the pattern changes to one without that key), fall back to 'sc'.
+  useEffect(() => {
+    if (!pattern) return;
+    if (!isCustomStitch(stitch)) return;
+    if (!pattern.customStitches.some((c) => c.key === stitch)) {
+      setStitch('sc');
+    }
+  }, [pattern, stitch, setStitch]);
 
   if (!pattern) return null;
 
@@ -221,6 +241,9 @@ export function EditorView({ onOpenSettings, onOpenShortcuts }: EditorViewProps 
         onSelect={setStitch}
         displayMode={pattern.displayMode}
         onDisplayModeChange={setDisplayMode}
+        customStitches={pattern.customStitches}
+        onAddCustom={() => setShowAddCustom(true)}
+        onDeleteCustom={(key) => setPendingDeleteCustom(key)}
       />
 
       <ColorPalette
@@ -241,6 +264,7 @@ export function EditorView({ onOpenSettings, onOpenShortcuts }: EditorViewProps 
         color={activeColor}
         cursorRow={(cursor?.row ?? 0) + 1}
         cursorCol={(cursor?.col ?? 0) + 1}
+        customStitches={pattern.customStitches}
       />
 
       <Canvas
@@ -297,6 +321,37 @@ export function EditorView({ onOpenSettings, onOpenShortcuts }: EditorViewProps 
           onDismiss={() => setSuccessMessage(null)}
         />
       )}
+
+      {showAddCustom && (
+        <AddCustomStitchDialog
+          customStitches={pattern.customStitches}
+          onCancel={() => setShowAddCustom(false)}
+          onSubmit={(data) => {
+            const key = addCustomStitch(data);
+            setStitch(key);
+            setShowAddCustom(false);
+          }}
+        />
+      )}
+
+      {pendingDeleteCustom && (() => {
+        const meta = pattern.customStitches.find((c) => c.key === pendingDeleteCustom);
+        if (!meta) {
+          setPendingDeleteCustom(null);
+          return null;
+        }
+        return (
+          <DeleteCustomStitchDialog
+            meta={meta}
+            usageCount={countCustomStitchUsage(pendingDeleteCustom)}
+            onCancel={() => setPendingDeleteCustom(null)}
+            onConfirm={(replacement) => {
+              removeCustomStitch(pendingDeleteCustom, replacement);
+              setPendingDeleteCustom(null);
+            }}
+          />
+        );
+      })()}
     </div>
   );
 }

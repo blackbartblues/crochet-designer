@@ -2,7 +2,15 @@ import { writeFile } from '@tauri-apps/plugin-fs';
 import { save as saveDialog } from '@tauri-apps/plugin-dialog';
 import { documentDir, join } from '@tauri-apps/api/path';
 import type { Pattern } from '../domain/pattern';
-import { STITCHES, type StitchKey } from '../domain/stitches';
+import {
+  STITCHES,
+  isBuiltInStitch,
+  isCustomStitch,
+  type AnyStitchKey,
+  type BuiltInStitchKey,
+  type CustomStitchKey,
+  type CustomStitchMeta,
+} from '../domain/stitches';
 import type { ColorId, YarnColor } from '../domain/colors';
 import { isDarkHex } from '../domain/colors';
 import { PatternFileError } from '../domain/validation';
@@ -118,7 +126,13 @@ export async function buildWorkbookBuffer(pattern: Pattern): Promise<Uint8Array>
             fgColor: { argb: hexToArgb(color.hex) },
           };
         }
-        const code = STITCHES[cell.stitch].code;
+        let code = '?';
+        if (isBuiltInStitch(cell.stitch)) {
+          code = STITCHES[cell.stitch].code;
+        } else if (isCustomStitch(cell.stitch)) {
+          const custom = pattern.customStitches.find((c) => c.key === cell.stitch);
+          code = custom?.code ?? '?';
+        }
         xCell.value = code;
         xCell.font = {
           bold: true,
@@ -182,28 +196,63 @@ export async function buildWorkbookBuffer(pattern: Pattern): Promise<Uint8Array>
   // Spacer
   const stitchHeaderRowIdx = 2 + pattern.colors.length + 2;
 
-  // Stitch legend — only stitches actually used
-  const usedStitches = new Set<StitchKey>();
+  // Stitch legend — only stitches actually used.
+  // Split into built-in and custom buckets so the legend can label them clearly.
+  const usedBuiltIn = new Set<BuiltInStitchKey>();
+  const usedCustom = new Set<CustomStitchKey>();
   for (const row of pattern.rows) {
     for (const cell of row.cells) {
-      if (cell) usedStitches.add(cell.stitch);
+      if (!cell) continue;
+      const key: AnyStitchKey = cell.stitch;
+      if (isBuiltInStitch(key)) usedBuiltIn.add(key);
+      else if (isCustomStitch(key)) usedCustom.add(key);
     }
   }
 
-  if (usedStitches.size > 0) {
-    const stitchHeader = legend.getRow(stitchHeaderRowIdx);
+  let cursorRow = stitchHeaderRowIdx;
+  if (usedBuiltIn.size > 0) {
+    const stitchHeader = legend.getRow(cursorRow);
     stitchHeader.values = ['Code', 'English name', 'Polish name'];
     stitchHeader.font = { bold: true };
+    cursorRow++;
 
-    let i = 0;
-    for (const key of usedStitches) {
+    for (const key of usedBuiltIn) {
       const meta = STITCHES[key];
-      const r = legend.getRow(stitchHeaderRowIdx + 1 + i);
+      const r = legend.getRow(cursorRow);
       r.getCell(1).value = meta.code;
       r.getCell(1).font = { name: 'Consolas', size: 11, bold: true };
       r.getCell(2).value = meta.labelEn;
       r.getCell(3).value = meta.labelPl;
-      i++;
+      cursorRow++;
+    }
+  }
+
+  if (usedCustom.size > 0) {
+    cursorRow++; // spacer
+    const banner = legend.getRow(cursorRow);
+    banner.getCell(1).value = 'Custom stitches / Niestandardowe sploty';
+    banner.font = { bold: true, italic: true, color: { argb: 'FF8A4F2D' } };
+    cursorRow++;
+
+    const header = legend.getRow(cursorRow);
+    header.values = ['Code', 'English name', 'Polish name', 'Note'];
+    header.font = { bold: true };
+    cursorRow++;
+
+    const customMap = new Map<CustomStitchKey, CustomStitchMeta>();
+    for (const cs of pattern.customStitches) customMap.set(cs.key, cs);
+
+    for (const key of usedCustom) {
+      const meta = customMap.get(key);
+      if (!meta) continue;
+      const r = legend.getRow(cursorRow);
+      r.getCell(1).value = meta.code;
+      r.getCell(1).font = { name: 'Consolas', size: 11, bold: true };
+      r.getCell(2).value = meta.labelEn ?? '';
+      r.getCell(3).value = meta.labelPl ?? '';
+      r.getCell(4).value = 'User-defined — see pattern notes';
+      r.getCell(4).font = { italic: true, color: { argb: 'FF8A7B6E' } };
+      cursorRow++;
     }
   }
 

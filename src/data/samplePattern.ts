@@ -5,7 +5,8 @@ import { DEFAULT_PALETTE } from '../domain/colors';
 export const SAMPLE_PATTERN: Pattern = {
   id: 'sample-szalik-bordowy',
   name: 'Szalik bordowy',
-  schemaVersion: 1,
+  schemaVersion: 2,
+  customStitches: [],
   createdAt: '2026-04-26T19:00:00.000Z',
   updatedAt: '2026-04-26T19:43:00.000Z',
   displayMode: 'symbol',

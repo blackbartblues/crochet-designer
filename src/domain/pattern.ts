@@ -1,11 +1,11 @@
-import type { StitchKey, DisplayMode } from './stitches';
+import type { AnyStitchKey, CustomStitchMeta, DisplayMode } from './stitches';
 import type { ColorId, YarnColor } from './colors';
 import { DEFAULT_PALETTE, BASE_COLOR } from './colors';
 import { newId } from '../utils/id';
 
 /** A single grid cell — null means unfilled. */
 export type CellContent = null | {
-  stitch: StitchKey;
+  stitch: AnyStitchKey;
   colorId: ColorId;
 };
 
@@ -19,10 +19,14 @@ export interface Row {
   cells: CellContent[];
 }
 
+/**
+ * Pattern file schema. schemaVersion 2 introduces customStitches.
+ * Older files (schemaVersion 1) are migrated on load — see validation.ts.
+ */
 export interface Pattern {
   id: string;
   name: string;
-  schemaVersion: 1;
+  schemaVersion: 2;
   /** ISO 8601 strings */
   createdAt: string;
   updatedAt: string;
@@ -30,6 +34,8 @@ export interface Pattern {
   colors: YarnColor[];
   rows: Row[];
   displayMode: DisplayMode;
+  /** User-defined stitches embedded in this pattern. May be empty. */
+  customStitches: CustomStitchMeta[];
 }
 
 /** Cursor position in the grid. */
@@ -59,12 +65,13 @@ export function createEmptyPattern(name: string, cols: number): Pattern {
   return {
     id: newId(),
     name: name.trim() || 'Wzór bez nazwy',
-    schemaVersion: 1,
+    schemaVersion: 2,
     createdAt: now,
     updatedAt: now,
     colors: [...DEFAULT_PALETTE],
     rows: [createEmptyRow(cols, 'rtl')],
     displayMode: 'symbol',
+    customStitches: [],
   };
 }
 

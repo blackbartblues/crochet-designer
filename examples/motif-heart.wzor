@@ -1,0 +1,114 @@
+{
+  "id": "example-motif-heart",
+  "name": "Motyw serca 9×9",
+  "schemaVersion": 2,
+  "createdAt": "2026-04-27T20:00:00.000Z",
+  "updatedAt": "2026-04-27T20:00:00.000Z",
+  "displayMode": "symbol",
+  "colors": [
+    { "id": "base", "name": "Kremowy", "hex": "#F5EDE0", "isBase": true },
+    { "id": "rose", "name": "Bordo",   "hex": "#C97B84", "isBase": false }
+  ],
+  "rows": [
+    { "id": "r01", "direction": "rtl", "cells": [
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" }
+    ] },
+    { "id": "r02", "direction": "ltr", "cells": [
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "base" }
+    ] },
+    { "id": "r03", "direction": "rtl", "cells": [
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" }
+    ] },
+    { "id": "r04", "direction": "ltr", "cells": [
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" }
+    ] },
+    { "id": "r05", "direction": "rtl", "cells": [
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "base" }
+    ] },
+    { "id": "r06", "direction": "ltr", "cells": [
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" }
+    ] },
+    { "id": "r07", "direction": "rtl", "cells": [
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" }
+    ] },
+    { "id": "r08", "direction": "ltr", "cells": [
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "rose" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" }
+    ] },
+    { "id": "r09", "direction": "rtl", "cells": [
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" }
+    ] }
+  ],
+  "customStitches": []
+}

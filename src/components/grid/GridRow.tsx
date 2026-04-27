@@ -2,6 +2,7 @@ import { GridCell } from './GridCell';
 import { RowDirectionToggle } from './RowDirectionToggle';
 import type { Row } from '../../domain/pattern';
 import type { YarnColor, ColorId } from '../../domain/colors';
+import type { CustomStitchMeta } from '../../domain/stitches';
 
 interface GridRowProps {
   row: Row;
@@ -10,6 +11,8 @@ interface GridRowProps {
   cols: number;
   /** Lookup map id → color, includes the base color. */
   colorMap: Map<ColorId, YarnColor>;
+  /** Lookup of custom stitches by key (for rendering custom symbols). */
+  customStitchMap: Map<string, CustomStitchMeta>;
   /** 0-indexed; null/undefined when cursor is on a different row. */
   cursorCol?: number;
   isCursorRow: boolean;
@@ -23,6 +26,7 @@ export function GridRow({
   rowNumber,
   cols,
   colorMap,
+  customStitchMap,
   cursorCol,
   isCursorRow,
   onPaintCell,
@@ -41,6 +45,7 @@ export function GridRow({
             key={idx}
             cell={cell}
             color={cell ? colorMap.get(cell.colorId) : undefined}
+            customStitchMap={customStitchMap}
             isCursor={isCursorRow && cursorCol === idx}
             {...(onPaintCell ? { onClick: () => onPaintCell(rowIndex, idx) } : {})}
           />

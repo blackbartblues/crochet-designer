@@ -4,6 +4,7 @@ import { ColumnHeader } from './ColumnHeader';
 import { GridRow } from './GridRow';
 import type { Pattern, Cursor } from '../../domain/pattern';
 import type { ColorId, YarnColor } from '../../domain/colors';
+import type { CustomStitchMeta } from '../../domain/stitches';
 
 interface GridProps {
   pattern: Pattern;
@@ -17,6 +18,9 @@ export function Grid({ pattern, cursor, onPaintCell, onToggleRowDirection, onNew
   const { t } = useTranslation();
   const colorMap = new Map<ColorId, YarnColor>();
   for (const c of pattern.colors) colorMap.set(c.id, c);
+
+  const customStitchMap = new Map<string, CustomStitchMeta>();
+  for (const cs of pattern.customStitches) customStitchMap.set(cs.key, cs);
 
   const cols = pattern.rows[0]?.cells.length ?? 0;
 
@@ -35,6 +39,7 @@ export function Grid({ pattern, cursor, onPaintCell, onToggleRowDirection, onNew
               rowNumber={idx + 1}
               cols={cols}
               colorMap={colorMap}
+              customStitchMap={customStitchMap}
               isCursorRow={isCursorRow}
               {...(isCursorRow && cursor ? { cursorCol: cursor.col } : {})}
               {...(onPaintCell ? { onPaintCell } : {})}

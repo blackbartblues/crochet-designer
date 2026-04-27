@@ -1,0 +1,63 @@
+{
+  "id": "example-square-sampler",
+  "name": "Próbnik splotów 6×6",
+  "schemaVersion": 2,
+  "createdAt": "2026-04-27T20:00:00.000Z",
+  "updatedAt": "2026-04-27T20:00:00.000Z",
+  "displayMode": "both",
+  "colors": [
+    { "id": "base", "name": "Kremowy", "hex": "#F5EDE0", "isBase": true },
+    { "id": "sage", "name": "Szałwia", "hex": "#A8B89C", "isBase": false }
+  ],
+  "rows": [
+    { "id": "r01", "direction": "rtl", "cells": [
+      { "stitch": "ch", "colorId": "base" },
+      { "stitch": "ch", "colorId": "base" },
+      { "stitch": "ch", "colorId": "base" },
+      { "stitch": "ch", "colorId": "base" },
+      { "stitch": "ch", "colorId": "base" },
+      { "stitch": "ch", "colorId": "base" }
+    ] },
+    { "id": "r02", "direction": "ltr", "cells": [
+      { "stitch": "slst", "colorId": "base" },
+      { "stitch": "slst", "colorId": "base" },
+      { "stitch": "slst", "colorId": "base" },
+      { "stitch": "slst", "colorId": "base" },
+      { "stitch": "slst", "colorId": "base" },
+      { "stitch": "slst", "colorId": "base" }
+    ] },
+    { "id": "r03", "direction": "rtl", "cells": [
+      { "stitch": "sc", "colorId": "sage" },
+      { "stitch": "sc", "colorId": "sage" },
+      { "stitch": "sc", "colorId": "sage" },
+      { "stitch": "sc", "colorId": "sage" },
+      { "stitch": "sc", "colorId": "sage" },
+      { "stitch": "sc", "colorId": "sage" }
+    ] },
+    { "id": "r04", "direction": "ltr", "cells": [
+      { "stitch": "hdc", "colorId": "sage" },
+      { "stitch": "hdc", "colorId": "sage" },
+      { "stitch": "hdc", "colorId": "sage" },
+      { "stitch": "hdc", "colorId": "sage" },
+      { "stitch": "hdc", "colorId": "sage" },
+      { "stitch": "hdc", "colorId": "sage" }
+    ] },
+    { "id": "r05", "direction": "rtl", "cells": [
+      { "stitch": "dc", "colorId": "base" },
+      { "stitch": "dc", "colorId": "base" },
+      { "stitch": "dc", "colorId": "base" },
+      { "stitch": "dc", "colorId": "base" },
+      { "stitch": "dc", "colorId": "base" },
+      { "stitch": "dc", "colorId": "base" }
+    ] },
+    { "id": "r06", "direction": "ltr", "cells": [
+      { "stitch": "tr", "colorId": "base" },
+      { "stitch": "tr", "colorId": "base" },
+      { "stitch": "tr", "colorId": "base" },
+      { "stitch": "tr", "colorId": "base" },
+      { "stitch": "tr", "colorId": "base" },
+      { "stitch": "tr", "colorId": "base" }
+    ] }
+  ],
+  "customStitches": []
+}

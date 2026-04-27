@@ -35,10 +35,53 @@
     "yarns": "Yarns",
     "yarns_hint": "cell background color",
     "addColor": "Add new color",
+    "addCustomTooltip": "Add custom stitch",
+    "addCustomShort": "+",
     "displayMode": {
       "symbol": "Symbol",
       "code": "Code",
       "both": "Both"
+    }
+  },
+  "customStitch": {
+    "modal": {
+      "title": "New custom stitch",
+      "field": {
+        "code": "Shortcut",
+        "codeHelp": "1–3 letters (e.g. X, BPd)",
+        "labelPl": "Polish name (optional)",
+        "labelEn": "English name (optional)"
+      },
+      "library": {
+        "title": "Symbol library",
+        "search": "Search a symbol…",
+        "allCategories": "All",
+        "none": "No symbol",
+        "noneTooltip": "Letter shortcut only, no library icon",
+        "noneHint": "The stitch will render as a letter inside a circle (no library icon)."
+      },
+      "btn": {
+        "save": "Save",
+        "cancel": "Cancel"
+      }
+    },
+    "error": {
+      "codeRequired": "Shortcut is required",
+      "codeFormat": "Letters only, 1–3 characters",
+      "codeBuiltIn": "Conflicts with built-in stitch »{{code}}«",
+      "codeDuplicate": "Shortcut already exists in this pattern"
+    },
+    "delete": {
+      "tooltip": "Delete stitch",
+      "title": "Delete stitch »{{code}}«?",
+      "usedBody": "Stitch is used in {{count}} cells. Choose what to do:",
+      "unusedBody": "Stitch isn't used in any cell. Are you sure you want to delete?",
+      "optionClear": "Clear those cells",
+      "optionReplace": "Replace with:",
+      "btn": {
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      }
     }
   },
   "brush": {

@@ -35,10 +35,53 @@
     "yarns": "Włóczki",
     "yarns_hint": "kolor tła oczka",
     "addColor": "Dodaj nowy kolor",
+    "addCustomTooltip": "Dodaj niestandardowy splot",
+    "addCustomShort": "+",
     "displayMode": {
       "symbol": "Symbol",
       "code": "Skrót",
       "both": "Oba"
+    }
+  },
+  "customStitch": {
+    "modal": {
+      "title": "Nowy niestandardowy splot",
+      "field": {
+        "code": "Skrót",
+        "codeHelp": "1–3 litery (np. X, BPd)",
+        "labelPl": "Nazwa polska (opcjonalne)",
+        "labelEn": "Nazwa angielska (opcjonalne)"
+      },
+      "library": {
+        "title": "Biblioteka znaków",
+        "search": "Szukaj symbolu…",
+        "allCategories": "Wszystkie",
+        "none": "Bez symbolu",
+        "noneTooltip": "Tylko skrót literowy bez ikony z biblioteki",
+        "noneHint": "Splot wyświetli się jako litera w okręgu (bez symbolu z biblioteki)."
+      },
+      "btn": {
+        "save": "Zapisz",
+        "cancel": "Anuluj"
+      }
+    },
+    "error": {
+      "codeRequired": "Skrót jest wymagany",
+      "codeFormat": "Tylko litery, 1–3 znaki",
+      "codeBuiltIn": "Skrót koliduje z oficjalnym splotem »{{code}}«",
+      "codeDuplicate": "Skrót już istnieje w tym wzorze"
+    },
+    "delete": {
+      "tooltip": "Usuń splot",
+      "title": "Usunąć splot »{{code}}«?",
+      "usedBody": "Splot jest używany w {{count}} komórkach. Wybierz, co zrobić:",
+      "unusedBody": "Splot nie jest używany w żadnej komórce. Czy na pewno usunąć?",
+      "optionClear": "Wyczyść te komórki",
+      "optionReplace": "Zamień na:",
+      "btn": {
+        "confirm": "Usuń",
+        "cancel": "Anuluj"
+      }
     }
   },
   "brush": {

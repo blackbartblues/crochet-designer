@@ -1,0 +1,85 @@
+{
+  "id": "example-custom-stitch-demo",
+  "name": "Demo niestandardowych splotów",
+  "schemaVersion": 2,
+  "createdAt": "2026-04-27T20:00:00.000Z",
+  "updatedAt": "2026-04-27T20:00:00.000Z",
+  "displayMode": "both",
+  "colors": [
+    { "id": "base",    "name": "Kremowy",     "hex": "#F5EDE0", "isBase": true },
+    { "id": "mustard", "name": "Musztardowy", "hex": "#C9A961", "isBase": false },
+    { "id": "sage",    "name": "Szałwia",     "hex": "#A8B89C", "isBase": false }
+  ],
+  "rows": [
+    { "id": "r01", "direction": "rtl", "cells": [
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" }
+    ] },
+    { "id": "r02", "direction": "ltr", "cells": [
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "custom:popcorn", "colorId": "mustard" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "custom:bobble",  "colorId": "sage" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "custom:popcorn", "colorId": "mustard" },
+      { "stitch": "sc", "colorId": "base" }
+    ] },
+    { "id": "r03", "direction": "rtl", "cells": [
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" }
+    ] },
+    { "id": "r04", "direction": "ltr", "cells": [
+      { "stitch": "custom:my", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "custom:bobble", "colorId": "sage" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "custom:popcorn", "colorId": "mustard" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "custom:my", "colorId": "base" }
+    ] },
+    { "id": "r05", "direction": "rtl", "cells": [
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" },
+      { "stitch": "sc", "colorId": "base" }
+    ] }
+  ],
+  "customStitches": [
+    {
+      "key": "custom:popcorn",
+      "code": "Po",
+      "labelPl": "popcorn",
+      "labelEn": "popcorn stitch",
+      "symbolRef": "lib-popcorn",
+      "createdAt": "2026-04-27T20:00:00.000Z"
+    },
+    {
+      "key": "custom:bobble",
+      "code": "Bo",
+      "labelPl": "bobel",
+      "labelEn": "bobble stitch",
+      "symbolRef": "lib-bobble",
+      "createdAt": "2026-04-27T20:00:00.000Z"
+    },
+    {
+      "key": "custom:my",
+      "code": "X",
+      "labelPl": "moja sztuczka mamy",
+      "labelEn": "mom's special move",
+      "createdAt": "2026-04-27T20:00:00.000Z"
+    }
+  ]
+}

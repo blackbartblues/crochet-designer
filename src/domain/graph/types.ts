@@ -20,6 +20,11 @@ export type StitchTypeRef =
   | { kind: 'builtin'; type: BuiltinStitchType }
   | { kind: 'custom'; id: CustomStitchId };
 
+export interface Position {
+  x: number;
+  y: number;
+}
+
 export interface StitchAttachments {
   photoIds: PhotoId[];
   note?: string;
@@ -30,7 +35,7 @@ export interface Stitch {
   typeRef: StitchTypeRef;
   colorRef?: ColorId;
   round?: RoundIndex;
-  position?: { x: number; y: number };
+  position?: Position;
   attachments?: StitchAttachments;
 }
 

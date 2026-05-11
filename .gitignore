@@ -28,3 +28,6 @@ dist-ssr
 !examples/*.wzor
 src-tauri/icon-1024.png
 coverage/
+
+# Brainstorming companion mockups
+.superpowers/

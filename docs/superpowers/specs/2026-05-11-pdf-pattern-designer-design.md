@@ -3,7 +3,9 @@
 - **Status:** draft (auto-generated during brainstorming session 2026-05-11)
 - **Branch target:** `feature/pdf-pattern-designer`
 - **Scope:** major feature extension of `crochet-designer` from rectangular-grid editor to a multigraph-based pattern designer with professional PDF export for Etsy/Ravelry sale.
-- **Reference artifact:** `/home/blacku/Downloads/Hexagonshirt.pdf` (Caroline Zuschlag, *Hexagon Shirt*, 2022) — purchased on Etsy, used as visual/structural inspiration only.
+- **Reference artifacts:**
+  - `/home/blacku/Downloads/Hexagonshirt.pdf` (Caroline Zuschlag, *Hexagon Shirt*, 2022) — purchased on Etsy, used as visual/structural inspiration only.
+  - `docs/references/2026-05-11-symbols-and-hood-stitch.pdf` — internal reference compiled from a separate Claude conversation with the actual user (mom). Contains the canonical Polish + US + UK stitch nomenclature table, the full symbol library mom uses, Polish-language pitfalls to avoid, and the **Hood Cluster (HC)** signature stitch with full technical definition and chart geometry. **This document is the source of truth for the stitch taxonomy and US/UK/PL terminology.** See §18 of this spec for the technical implications.
 
 ---
 
@@ -825,3 +827,162 @@ These do not block writing the implementation plan, but should be settled before
 - Sections 5–11 (UX, chart, PDF, customization, i18n, photos, custom stitches) are mid-detail — implementation plan will fill in the rest.
 - Sections 12–15 (perf, testing, roadmap, risks) are scoped at "decision-grade", not "ticket-grade".
 - This spec assumes the implementation plan (next step, via `writing-plans`) will derive tickets, files, and ordering.
+
+---
+
+## 18. Stitch taxonomy, terminology systems, and Hood Cluster
+
+This section consolidates the canonical stitch reference and Hood Cluster signature definition from `docs/references/2026-05-11-symbols-and-hood-stitch.pdf`. It supersedes any earlier informal lists and is the source of truth for the symbol library, the abbreviations table, and the Polish/US/UK terminology mapping.
+
+### 18.1 Canonical stitch list (expanded `BuiltinStitchType`)
+
+The original Phase 1 union of 9 values is the **minimum viable** set for migration. Phase 3 (chart + PDF) expands it to cover the full set mom uses on Etsy. The expansion is **additive only** — existing 9 values stay, no renames, no removals — so Task 1's type-level test stays valid until Phase 3 updates it intentionally.
+
+**Basic stitches (8)** — all worked from a single anchor, distinguished by height (yarn-overs before insertion):
+
+| Code (PL) | Code (US) | Code (UK) | PL name | US name | UK name | Height | Symbol |
+|---|---|---|---|---|---|---|---|
+| `op` / `ł` | `ch` | `ch` | łańcuszek | chain | chain | 0 | ⌒ (oval) |
+| `oś` / `z` | `sl_st` | `ss` | oczko ścisłe | slip stitch | slip stitch | 0 | • |
+| `ps` | `sc` | `dc` ⚠ | półsłupek | single crochet | double crochet | 1 | × |
+| `psn` | `hdc` | `htr` | półsłupek z narzutem | half double crochet | half treble | 2 | Ŧ |
+| `sł` | `dc` | `tr` ⚠ | słupek | double crochet | treble crochet | 3 | ⊤ with 1 crossbar |
+| `sł2n` | `tr` | `dtr` | słupek podwójny | treble crochet | double treble | 4 | ⊤ with 2 crossbars |
+| `sł3n` | `dtr` | `trtr` | słupek potrójny | double treble | triple treble | 5 | ⊤ with 3 crossbars |
+| `sł4n` | `trtr` | `qtr` | słupek poczwórny | triple treble | quadruple treble | 6 | ⊤ with 4 crossbars |
+
+The ⚠ markers identify the US/UK terminology trap: the same word "double crochet" means different stitches in the two systems. The single most common reason Etsy patterns receive complaints is this confusion. The PDF legend on every pattern MUST be tagged `US terms` or `UK terms` in the header.
+
+**Modifications (5)** — same primary stitch but with structural variation:
+
+| Code (PL) | Code (US) | Code (UK) | PL name | US name | UK name | Symbol |
+|---|---|---|---|---|---|---|
+| `2sł-w-1` | `inc` | `inc` | zwiększenie | increase | increase | V |
+| `2sł-raz` | `dec` (`dc2tog`) | `dec` | zmniejszenie | decrease | decrease | A |
+| `3sł-raz` | `dc3tog` | `tr3tog` | zmniejszenie potrójne | triple decrease | triple decrease | wide A |
+| `sł.wyp.` | `FPdc` (`fpdc`) | `raised tr fr` (`rtrf`) | słupek wypukły | front post double crochet | raised treble front | ⊥ with hook ↑ |
+| `sł.wkl.` | `BPdc` (`bpdc`) | `raised tr bk` (`rtrb`) | słupek wklęsły | back post double crochet | raised treble back | ⊥ with hook ↓ |
+
+**Decorative / compound (6)** — visually distinct stitch clusters that occupy one base anchor or one chain-space:
+
+| Code (PL) | Code (US) | Code (UK) | PL name | US name | UK name | Mechanic |
+|---|---|---|---|---|---|---|
+| `pik` | `picot` (`p`) | `picot` | pikotka | picot | picot | 3 ch closed into a small arc |
+| `musz` | `shell` (`sh`) | `shell` | muszelka | shell / 5-dc shell | shell | 5 dc into one anchor |
+| `pęcz.` | `CL` (`cluster`) | `cluster` | pęczek | cluster (3-dc cluster) | cluster | 3 dc closed together at top |
+| `pop` | `PC` (`popcorn`) | `popcorn` | popcorn | popcorn | popcorn | 5 dc into one anchor, closed into a ball |
+| `puff` | `puff` (`puff st`) | `puff` | ścieg puszysty | puff stitch | puff stitch | 3–5 yarn-overs pulled through together |
+| (`V-st`) | `V-stitch` (`V-st`) | `V-stitch` | ścieg V | V-stitch | V-stitch | dc + ch + dc into one anchor |
+
+### 18.2 Polish nomenclature corrections (lint rules)
+
+The Polish-speaking crochet community has multiple competing conventions and one large source of confusion — **knitting** vs **crochet** terminology. The validator (or a future UI hint layer) should flag the following:
+
+- **`przybawka`, `ubawka`** — knitting terminology, NOT crochet. Use `zwiększenie` / `zmniejszenie` or describe as `dodanie oczka` / `odjęcie oczka`.
+- **`kłosek`** — Polish crochet community uses `pęczek` for what some sources mis-translate as `kłosek` (which is the knitting term). Validator should rewrite "kłosek" → "pęczek" with a warning.
+- **`grupka V`** — not an established Polish name. Use `V-stitch` or describe as `2 słupki w jedno oczko z 1 op między nimi`.
+- **`puszysty`** standalone — adjective, not a noun. Use `ścieg puszysty` or `pęczek puszysty`.
+
+These rules belong in a `domain/lint/polishStitchNames.ts` module that runs against `customStitches[].nameByLanguage.pl` and any user-typed instructions in `rounds[].noteByLanguage.pl`. Out of scope for Phase 1; lands in Phase 3 alongside the auto-instruction generator.
+
+### 18.3 The Hood Cluster (HC) — mom's signature stitch
+
+**Mechanic (US terms):**
+
+> Yarn over, insert hook in next stitch, draw up a loop (3 loops on hook). Insert hook in the *following* stitch (no yarn over this time), draw up a loop (4 loops on hook). Draw yarn through all 4 loops on hook.
+
+The HC stitch combines an *unfinished* `hdc` and an *unfinished* `sc`, then closes both with a single final pull-through. The result is a 2-anchor cluster with a height between `sc` (1) and `hdc` (2), approximately **1.5 rows tall**. Visually it draws as two slanted legs joined by a single horizontal crossbar at the top — like the letter `Ʌ` capped with a rod.
+
+**Critical geometry — overlap, not isolation:**
+
+> Cały splot to nie pojedynczy pęczek, tylko CIĄGŁY WZÓR: każdy następny pęczek startuje psł.n. w tym samym oczku, w którym poprzedni pęczek skończył ps.
+
+In plain English: each successive HC starts its first leg in the same base stitch where the previous HC ended its second leg. This means **every base stitch (except the two outermost) is worked TWICE** — once as a `hdc`-leg of cluster N+1, once as a `sc`-leg of cluster N. The stitch count stays constant because each cluster consumes 2 bases but each base is consumed by 2 clusters.
+
+**Implication for our data model:**
+
+The multigraph already supports this geometry without changes:
+
+- Each HC stitch has **two** outgoing `anchor` edges (one to each consumed base).
+- Each base stitch has **two** incoming anchors from neighbouring clusters in the graph.
+- Yarn flow runs cluster → cluster (one outgoing yarn_flow per HC).
+
+The existing validator (§4.2) correctly checks "at least one anchor edge" rather than "exactly one", so it admits HC clusters without modification. **The spec sentence in §4.2 that reads "every stitch except magic_ring and the first ch of a chain foundation has exactly one outgoing anchor edge (joins layer additional join edges on top)" must be amended to "at least one outgoing anchor edge — compound stitches like Hood Cluster carry two".** The validator code matches this corrected wording; only the prose in §4.2 needs to be reconciled.
+
+**Round vs. flat geometry:**
+
+- **In the round** (typical for beanies/hats): all HCs lean the same direction → a uniform "rice grain" texture. This is the use case mom designs for.
+- **In alternating flat rows**: the work flips at every row, so HCs lean back and forth → herringbone/zigzag texture.
+
+Cap patterns stay in the round (no flips) so the texture stays uniform. The mode selector for an HC pattern should default to round.
+
+**Symbol composition:**
+
+The HC symbol is a **composite**, not a single SVG path. The chart renderer needs to support compound symbols whose components reference primitive symbols:
+
+```ts
+{
+  kind: 'composite',
+  components: [
+    { primitive: 'hdc',         offset: { x: -3, y: 0 } },  // left leg (taller)
+    { primitive: 'sc',          offset: { x:  3, y: 0 } },  // right leg (shorter)
+    { primitive: 'horizontal_bar', span: 6, y: 'top' }       // shared top crossbar
+  ]
+}
+```
+
+This is a Phase 3 addition to the existing `CustomStitch.symbol` discriminated union (`preset | svgPath`), adding a third variant `composite`. Until Phase 3 we can ship HC as a single `svgPath` with the hand-tuned glyph.
+
+**Definition entry for the PDF Special Stitches page (template):**
+
+> **Hood cluster (HC) — EN (US):** Yarn over, insert hook in next stitch, draw up a loop (3 loops on hook). Insert hook in following stitch, draw up a loop (4 loops on hook). Draw yarn through all 4 loops on hook.
+>
+> **Pęczek kapturowy (PK) — PL:** Narzuć włóczkę na szydełko, wkłuj w następne oczko, wyciągnij pętelkę (3 pętle na szydełku). Wkłuj w kolejne oczko, wyciągnij pętelkę (4 pętle na szydełku). Przeciągnij włóczkę przez wszystkie 4 pętle.
+
+### 18.4 PDF "Information" / "Special Stitches" page updates
+
+Phase 3's PDF Information page gains the following structure (refining §9.1 — Information block):
+
+1. **System banner** — required first line, e.g. `US terms` or `UK terms`. Auto-derived from `PatternMeta.system`.
+2. **Yarn block** — unchanged.
+3. **Hook + gauge** — unchanged.
+4. **Abbreviations table** — auto-populated from the stitch types actually used in the pattern (built-in + custom). Three columns by default in `pl-en` mode: symbol, US/PL primary, UK secondary (only when the difference is non-trivial — i.e. for `sc/dc/hdc/dc/tr/dtr/trtr`).
+5. **Symbol legend** — visual grid of symbol → name.
+6. **Special Stitches section** — present whenever the pattern uses any `customStitch`. Each entry: composite symbol render, US definition paragraph, PL translation paragraph, 3–4 process photos in a grid, edge-case notes ("how to start the row", "how to close the round").
+
+### 18.5 PatternMeta extension
+
+Add to `PatternMeta`:
+
+```ts
+system: 'US' | 'UK'   // default: 'US' (Etsy convention)
+```
+
+Default for new patterns: `'US'`. Default for migrated v2 patterns: `'US'` (consistent with the existing rectangular editor's symbol library, which uses US abbreviations).
+
+This is a **non-breaking schema change** if added as an *optional* field in Phase 1 and a *required* field with a default in Phase 3. Recommendation: add to Phase 1 Task 1 / Task 5 as optional now (cheap), and tighten to required with default in Phase 3 when the PDF generator needs it.
+
+### 18.6 Etsy listing guidance (informational, not code)
+
+Captured for the in-app helper / first-run tutorial:
+
+- Main pattern text in **English (US)** — that's 95 % of the customer base and the European lingua franca.
+- Always include a **symbol chart** — symbols are international (PL/JP/US/BR customers all read them identically).
+- Polish version is **optional** — recommended phrasing in the Etsy listing: *"Pattern in English (US terms). Polish version available upon request."* This sidesteps the PL convention war (psn vs psł.n. etc.) entirely.
+- Hood Cluster (HC) is a **signature branding asset** — it doesn't have a settled English name, so mom owns the naming. Use *"GreenCat Hood Stitch"* or *"Hood Cluster (HC)"* in marketing copy; it lifts the price ceiling above generic "another hat pattern" and gives a unique SEO keyword.
+
+### 18.7 Required PDF contents when a pattern uses HC
+
+This is the acceptance checklist for any PDF export that includes the Hood Cluster:
+
+1. **Special Stitches section** with the full HC definition (US + PL).
+2. **Compact usage** in the main pattern instructions — e.g. `"Rnd 2: HC across, join with sl st."` rather than re-stating the mechanic every round.
+3. **Chart figure** showing at least 3 rounds of HC fabric, with chain foundation visible.
+4. **3–4 process photos**:
+   - 4 loops on hook just before the closing pull-through;
+   - a closed cluster;
+   - the insertion point of the next cluster's first leg (highlighting the overlap with the previous cluster's second leg);
+   - a finished 3–4 round swatch.
+5. **Edge notes** — explicit text for how the row/round begins and ends, since the overlap mechanic makes the boundary stitches a common source of confusion.
+
+The PDF section ordering logic in `pdf/PatternDocument.tsx` (Phase 3) detects HC usage and inserts the Special Stitches page automatically; the editor surfaces a warning if HC is used but no process photos are attached.

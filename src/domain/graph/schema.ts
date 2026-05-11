@@ -28,6 +28,14 @@ const attachmentsSchema = z.object({
   note: z.string().optional(),
 });
 
+// Shared i18n schemas: both languages optional in tags/captions, both required in titles.
+const optionalI18nSchema = z
+  .object({ pl: z.string(), en: z.string() })
+  .partial()
+  .optional();
+
+const requiredI18nSchema = z.object({ pl: z.string(), en: z.string() });
+
 const stitchSchema = z.object({
   id: z.string().min(1),
   typeRef: stitchTypeRefSchema,
@@ -75,10 +83,7 @@ const edgeSchema = z.discriminatedUnion('kind', [
 const colorSchema = z.object({
   id: z.string().min(1),
   hex: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
-  nameByLanguage: z
-    .object({ pl: z.string(), en: z.string() })
-    .partial()
-    .optional(),
+  nameByLanguage: optionalI18nSchema,
 });
 
 const photoSchema = z.object({
@@ -91,10 +96,7 @@ const photoSchema = z.object({
     }),
     z.object({ kind: z.literal('path'), path: z.string().min(1) }),
   ]),
-  captionByLanguage: z
-    .object({ pl: z.string(), en: z.string() })
-    .partial()
-    .optional(),
+  captionByLanguage: optionalI18nSchema,
   width: z.number().int().positive(),
   height: z.number().int().positive(),
   bytes: z.number().int().positive(),
@@ -103,8 +105,8 @@ const photoSchema = z.object({
 const customStitchSchema = z.object({
   id: z.string().min(1),
   shortCode: z.string().regex(/^[A-Za-z]{1,3}$/),
-  nameByLanguage: z.object({ pl: z.string(), en: z.string() }),
-  description: z.object({ pl: z.string(), en: z.string() }).optional(),
+  nameByLanguage: requiredI18nSchema,
+  description: requiredI18nSchema.optional(),
   symbol: z.discriminatedUnion('kind', [
     z.object({ kind: z.literal('preset'), presetId: z.string().min(1) }),
     z.object({ kind: z.literal('svgPath'), path: z.string().min(1) }),
@@ -117,10 +119,7 @@ const customStitchSchema = z.object({
 const roundSchema = z.object({
   index: z.number().int().nonnegative(),
   stitchIds: z.array(z.string().min(1)),
-  noteByLanguage: z
-    .object({ pl: z.string(), en: z.string() })
-    .partial()
-    .optional(),
+  noteByLanguage: optionalI18nSchema,
 });
 
 const pdfSectionSchema = z.object({
@@ -138,7 +137,7 @@ const pdfSectionSchema = z.object({
 });
 
 const metaSchema = z.object({
-  title: z.object({ pl: z.string(), en: z.string() }),
+  title: requiredI18nSchema,
   author: z.string(),
   designedAt: z.string(),
   yarn: z.object({
@@ -182,6 +181,10 @@ export function serializePatternV3(pattern: Pattern): string {
   return JSON.stringify(patternSchemaV3.parse(pattern), null, 2);
 }
 
+// The cast is intentional: Zod's inferred type widens optional fields and
+// loses literal narrowing on discriminated unions, so callers prefer the
+// hand-written Pattern type. The runtime shape after parse is guaranteed
+// equivalent — Zod validates structurally.
 export function parsePatternV3Raw(raw: unknown): Pattern {
   return patternSchemaV3.parse(raw) as Pattern;
 }

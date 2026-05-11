@@ -6,8 +6,10 @@ import { EmptyView } from './views/EmptyView';
 import { ConfirmDialog } from './components/dialogs/ConfirmDialog';
 import { SettingsDialog } from './components/dialogs/SettingsDialog';
 import { ShortcutsDialog } from './components/dialogs/ShortcutsDialog';
+import { GraphInspector } from './components/devtools/GraphInspector';
 import { usePatternStore } from './stores/patternStore';
 import { useRecentStore } from './stores/recentStore';
+import { useDocumentStore } from './stores/documentStore';
 import { useShortcuts } from './hooks/useShortcuts';
 // TODO Phase 4 follow-up: restore useDirtyGuard once we figure out why
 // onCloseRequested in dev+StrictMode prevents the window from ever closing.
@@ -58,6 +60,8 @@ export default function App() {
     onOpen: () => void handleOpen(),
   });
 
+  const graphPatternForDevtools = useDocumentStore((s) => s.graphPattern);
+
   return (
     <>
       <SvgSprite />
@@ -86,6 +90,10 @@ export default function App() {
 
       {isSettingsOpen && <SettingsDialog onClose={() => setIsSettingsOpen(false)} />}
       {isShortcutsOpen && <ShortcutsDialog onClose={() => setIsShortcutsOpen(false)} />}
+
+      {typeof window !== 'undefined' && window.location.search.includes('devtools') && (
+        <GraphInspector pattern={graphPatternForDevtools} />
+      )}
     </>
   );
 }

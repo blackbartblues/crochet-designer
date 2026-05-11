@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { parsePatternJson, serializePattern, PatternFileError } from './validation';
+import { parsePatternJson, serializePattern, PatternFileError, parsePatternAsV3 } from './validation';
 import { createEmptyPattern } from './pattern';
+import { validateGraph } from './validation/graph';
+import { serializePatternV3 } from './graph/schema';
 
 describe('serializePattern + parsePatternJson round-trip', () => {
   it('round-trips a freshly created pattern', () => {
@@ -179,5 +181,50 @@ describe('custom stitches in v2 schema', () => {
     });
     const parsed = parsePatternJson(serializePattern(p));
     expect(parsed.customStitches[0]?.symbolRef).toBeUndefined();
+  });
+});
+
+describe('parsePatternAsV3', () => {
+  it('returns a Pattern v3 when given v2 JSON', () => {
+    const v2 = {
+      id: 'p',
+      name: 'X',
+      schemaVersion: 2,
+      createdAt: '2024-01-01T00:00:00Z',
+      updatedAt: '2024-01-01T00:00:00Z',
+      colors: [
+        { id: 'c0', name: 'base', hex: '#ffffff', isBase: true },
+      ],
+      rows: [
+        { id: 'r0', direction: 'rtl', cells: [{ stitch: 'sc', colorId: 'c0' }] },
+      ],
+      displayMode: 'symbol',
+      customStitches: [],
+    };
+    const v3 = parsePatternAsV3(JSON.stringify(v2));
+    expect(v3.schemaVersion).toBe(3);
+    expect(v3.stitches).toHaveLength(1);
+    expect(validateGraph(v3).filter((i) => i.severity === 'critical')).toEqual([]);
+  });
+
+  it('round-trips a v3 JSON unchanged', () => {
+    const v2 = {
+      id: 'p',
+      name: 'X',
+      schemaVersion: 2,
+      createdAt: '2024-01-01T00:00:00Z',
+      updatedAt: '2024-01-01T00:00:00Z',
+      colors: [
+        { id: 'c0', name: 'base', hex: '#ffffff', isBase: true },
+      ],
+      rows: [
+        { id: 'r0', direction: 'rtl', cells: [{ stitch: 'sc', colorId: 'c0' }] },
+      ],
+      displayMode: 'symbol',
+      customStitches: [],
+    };
+    const v3 = parsePatternAsV3(JSON.stringify(v2));
+    const rePicked = parsePatternAsV3(serializePatternV3(v3));
+    expect(rePicked).toEqual(v3);
   });
 });

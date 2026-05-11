@@ -1,7 +1,10 @@
 import { z } from 'zod';
 import type { Pattern } from './pattern';
+import type { Pattern as PatternV3 } from './graph/types';
 import { STITCH_ORDER, STITCHES, isCustomStitch } from './stitches';
 import { isValidLibrarySymbolId } from './symbolLibrary';
+import { patternSchemaV3 } from './graph/schema';
+import { migrateV2ToV3 } from './graph/migration';
 
 const STITCH_KEYS = ['ch', 'slst', 'sc', 'hdc', 'dc', 'tr', 'dtr', 'inc', 'dec'] as const;
 const BUILT_IN_KEY_SET = new Set<string>(STITCH_KEYS);
@@ -235,4 +238,27 @@ export function parsePatternJson(
 /** Serialize a Pattern to a pretty-printed JSON string suitable for `.wzor` files. */
 export function serializePattern(pattern: Pattern): string {
   return JSON.stringify(pattern, null, 2);
+}
+
+/**
+ * Like `parsePatternJson` but returns a Pattern v3. Accepts v1, v2, and v3
+ * payloads, migrating up as needed. Throws PatternFileError on any failure.
+ */
+export function parsePatternAsV3(json: string): PatternV3 {
+  let raw: unknown;
+  try {
+    raw = JSON.parse(json);
+  } catch (err) {
+    throw new PatternFileError('Plik nie jest poprawnym JSON-em.', err);
+  }
+
+  // Try v3 first — most patterns going forward are v3.
+  const v3Result = patternSchemaV3.safeParse(raw);
+  if (v3Result.success) {
+    return v3Result.data as PatternV3;
+  }
+
+  // Otherwise fall back to v2 (which itself handles v1).
+  const v2 = parsePatternJson(json);
+  return migrateV2ToV3(v2);
 }

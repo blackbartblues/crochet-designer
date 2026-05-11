@@ -2,6 +2,9 @@ import { useMemo } from 'react';
 import type { Pattern, StitchId } from '../domain/graph/types';
 import { validateGraph } from '../domain/validation/graph';
 import { editorTheme } from './theme';
+import { readImageFile, buildPhotoFromBase64 } from '../photos/importer';
+import { usePhotoStore } from '../photos/photoStore';
+import { usePatternGraphStore } from '../stores/patternGraphStore';
 
 interface Props {
   pattern: Pattern;
@@ -47,6 +50,52 @@ export function Inspector({ pattern, selectedStitchId }: Props) {
           {stitch.attachments?.photoIds && stitch.attachments.photoIds.length > 0 && (
             <div><strong>Photos:</strong> {stitch.attachments.photoIds.length}</div>
           )}
+          <div style={{ marginTop: 10 }}>
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              id={`photo-upload-${stitch.id}`}
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const data = await readImageFile(file);
+                const photo = buildPhotoFromBase64(data);
+                usePhotoStore.getState().addPhoto(photo);
+                const current = usePatternGraphStore.getState().pattern;
+                if (!current) return;
+                const updatedStitches = current.stitches.map((s) =>
+                  s.id === stitch.id
+                    ? {
+                        ...s,
+                        attachments: {
+                          ...s.attachments,
+                          photoIds: [...(s.attachments?.photoIds ?? []), photo.id],
+                        },
+                      }
+                    : s,
+                );
+                const updatedPhotos = [...current.photos, photo];
+                usePatternGraphStore.getState().setPattern({
+                  ...current,
+                  stitches: updatedStitches,
+                  photos: updatedPhotos,
+                });
+                e.target.value = '';
+              }}
+            />
+            <label
+              htmlFor={`photo-upload-${stitch.id}`}
+              style={{
+                cursor: 'pointer',
+                color: editorTheme.color.inkSoft,
+                fontStyle: 'italic',
+                fontSize: 11,
+              }}
+            >
+              + attach photo
+            </label>
+          </div>
           {stitch.attachments?.note && (
             <div style={{ marginTop: 6, padding: 6, background: editorTheme.color.accentHi, fontStyle: 'italic' }}>
               {stitch.attachments.note}

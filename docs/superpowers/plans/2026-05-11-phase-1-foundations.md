@@ -62,7 +62,7 @@
 - **Immutability.** Builders return fresh objects. Walk helpers never mutate input. The store uses Immer via Zustand middleware (matching the existing `patternStore.ts` pattern).
 - **Determinism.** Every constructor either accepts an explicit id or calls `newId()` once. No `Date.now()` outside the existing factories that already use it.
 - **One commit per task.** Use the existing commit-message convention seen in `git log`: `feat:`, `test:`, `refactor:`, `docs:`, `chore:`.
-- **Run the existing test suite (`pnpm test`) at the end of every task** to confirm no v2 regression.
+- **Run the existing test suite (`npm test`) at the end of every task** to confirm no v2 regression.
 
 ---
 
@@ -132,7 +132,7 @@ describe('graph/types', () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `pnpm test -- src/domain/graph/types.test.ts`
+Run: `npm test -- src/domain/graph/types.test.ts`
 Expected: FAIL with `Cannot find module './types' or its corresponding type declarations.`
 
 - [ ] **Step 3: Write the types**
@@ -318,12 +318,12 @@ export function isStitchAnchor(
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `pnpm test -- src/domain/graph/types.test.ts`
+Run: `npm test -- src/domain/graph/types.test.ts`
 Expected: PASS (5 tests)
 
 - [ ] **Step 5: Run full suite for regression check**
 
-Run: `pnpm test && pnpm typecheck`
+Run: `npm test && npm run typecheck`
 Expected: all existing tests pass; tsc reports no errors.
 
 - [ ] **Step 6: Commit**
@@ -420,7 +420,7 @@ describe('graph/build', () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `pnpm test -- src/domain/graph/build.test.ts`
+Run: `npm test -- src/domain/graph/build.test.ts`
 Expected: FAIL with `Cannot find module './build'`.
 
 - [ ] **Step 3: Implement builders**
@@ -534,12 +534,12 @@ export function emptyPatternV3(input: EmptyPatternInput): Pattern {
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `pnpm test -- src/domain/graph/build.test.ts`
+Run: `npm test -- src/domain/graph/build.test.ts`
 Expected: PASS (6 tests)
 
 - [ ] **Step 5: Run full suite**
 
-Run: `pnpm test && pnpm typecheck`
+Run: `npm test && npm run typecheck`
 Expected: green.
 
 - [ ] **Step 6: Commit**
@@ -677,7 +677,7 @@ describe('graph/walk', () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `pnpm test -- src/domain/graph/walk.test.ts`
+Run: `npm test -- src/domain/graph/walk.test.ts`
 Expected: FAIL with `Cannot find module './walk'`.
 
 - [ ] **Step 3: Implement walk helpers**
@@ -775,12 +775,12 @@ export function stitchesInRound(pattern: Pattern, index: number): Stitch[] {
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `pnpm test -- src/domain/graph/walk.test.ts`
+Run: `npm test -- src/domain/graph/walk.test.ts`
 Expected: PASS (7 tests)
 
 - [ ] **Step 5: Run full suite**
 
-Run: `pnpm test && pnpm typecheck`
+Run: `npm test && npm run typecheck`
 Expected: green.
 
 - [ ] **Step 6: Commit**
@@ -973,7 +973,7 @@ describe('validateGraph', () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `pnpm test -- src/domain/validation/graph.test.ts`
+Run: `npm test -- src/domain/validation/graph.test.ts`
 Expected: FAIL with `Cannot find module './graph'`.
 
 - [ ] **Step 3: Implement the validator**
@@ -1177,12 +1177,12 @@ export function validateGraph(pattern: Pattern): GraphValidationIssue[] {
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `pnpm test -- src/domain/validation/graph.test.ts`
+Run: `npm test -- src/domain/validation/graph.test.ts`
 Expected: PASS (11 tests)
 
 - [ ] **Step 5: Run full suite**
 
-Run: `pnpm test && pnpm typecheck`
+Run: `npm test && npm run typecheck`
 Expected: green.
 
 - [ ] **Step 6: Commit**
@@ -1277,7 +1277,7 @@ describe('graph/schema', () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `pnpm test -- src/domain/graph/schema.test.ts`
+Run: `npm test -- src/domain/graph/schema.test.ts`
 Expected: FAIL with `Cannot find module './schema'`.
 
 - [ ] **Step 3: Implement schema**
@@ -1475,12 +1475,12 @@ export function parsePatternV3Raw(raw: unknown): Pattern {
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `pnpm test -- src/domain/graph/schema.test.ts`
+Run: `npm test -- src/domain/graph/schema.test.ts`
 Expected: PASS (5 tests)
 
 - [ ] **Step 5: Run full suite**
 
-Run: `pnpm test && pnpm typecheck`
+Run: `npm test && npm run typecheck`
 Expected: green.
 
 - [ ] **Step 6: Commit**
@@ -1600,7 +1600,7 @@ describe('migrateV2ToV3', () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `pnpm test -- src/domain/graph/migration.test.ts`
+Run: `npm test -- src/domain/graph/migration.test.ts`
 Expected: FAIL with `Cannot find module './migration'`.
 
 - [ ] **Step 3: Implement migration**
@@ -1768,12 +1768,12 @@ export function migrateV2ToV3(v2: PatternV2): Pattern {
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `pnpm test -- src/domain/graph/migration.test.ts`
+Run: `npm test -- src/domain/graph/migration.test.ts`
 Expected: PASS (7 tests)
 
 - [ ] **Step 5: Run full suite**
 
-Run: `pnpm test && pnpm typecheck`
+Run: `npm test && npm run typecheck`
 Expected: green.
 
 - [ ] **Step 6: Commit**
@@ -1793,7 +1793,7 @@ git commit -m "feat(graph): migration v2 grid -> v3 multigraph with legacyGrid s
 
 - [ ] **Step 1: Read the existing `validation.test.ts` to learn the test pattern**
 
-Run: `pnpm test -- src/domain/validation.test.ts --reporter=basic`
+Run: `npm test -- src/domain/validation.test.ts --reporter=basic`
 Expected: existing tests pass; note the file path of the fixture.
 
 - [ ] **Step 2: Add the failing test**
@@ -1854,7 +1854,7 @@ describe('parsePatternAsV3', () => {
 
 - [ ] **Step 3: Run test to verify failure**
 
-Run: `pnpm test -- src/domain/validation.test.ts -t parsePatternAsV3`
+Run: `npm test -- src/domain/validation.test.ts -t parsePatternAsV3`
 Expected: FAIL — `parsePatternAsV3 is not a function`.
 
 - [ ] **Step 4: Add the new export to `validation.ts`**
@@ -1893,12 +1893,12 @@ export function parsePatternAsV3(json: string): PatternV3 {
 
 - [ ] **Step 5: Run test to verify pass**
 
-Run: `pnpm test -- src/domain/validation.test.ts -t parsePatternAsV3`
+Run: `npm test -- src/domain/validation.test.ts -t parsePatternAsV3`
 Expected: PASS (2 new tests).
 
 - [ ] **Step 6: Run full suite**
 
-Run: `pnpm test && pnpm typecheck`
+Run: `npm test && npm run typecheck`
 Expected: green; no regression in existing v2 tests.
 
 - [ ] **Step 7: Commit**
@@ -1966,7 +1966,7 @@ describe('documentStore', () => {
 
 - [ ] **Step 3: Run test to verify failure**
 
-Run: `pnpm test -- src/stores/documentStore.test.ts`
+Run: `npm test -- src/stores/documentStore.test.ts`
 Expected: FAIL — module not found.
 
 - [ ] **Step 4: Implement the store**
@@ -2010,12 +2010,12 @@ export const useDocumentStore = create<DocumentStore>((set, get) => ({
 
 - [ ] **Step 5: Run test to verify pass**
 
-Run: `pnpm test -- src/stores/documentStore.test.ts`
+Run: `npm test -- src/stores/documentStore.test.ts`
 Expected: PASS (4 tests).
 
 - [ ] **Step 6: Run full suite**
 
-Run: `pnpm test && pnpm typecheck`
+Run: `npm test && npm run typecheck`
 Expected: green.
 
 - [ ] **Step 7: Commit**
@@ -2107,7 +2107,7 @@ describe('fileIo (v3)', () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `pnpm test -- src/services/fileIo.v3.test.ts`
+Run: `npm test -- src/services/fileIo.v3.test.ts`
 Expected: FAIL — `loadPatternAsV3FromPath is not a function`.
 
 - [ ] **Step 3: Add the v3 loader to `fileIo.ts`**
@@ -2149,12 +2149,12 @@ export async function savePatternV3ToPath(
 
 - [ ] **Step 4: Run test to verify pass**
 
-Run: `pnpm test -- src/services/fileIo.v3.test.ts`
+Run: `npm test -- src/services/fileIo.v3.test.ts`
 Expected: PASS (2 tests).
 
 - [ ] **Step 5: Run full suite**
 
-Run: `pnpm test && pnpm typecheck`
+Run: `npm test && npm run typecheck`
 Expected: green.
 
 - [ ] **Step 6: Commit**
@@ -2217,12 +2217,12 @@ describe('migration: every bundled example round-trips losslessly', () => {
 
 - [ ] **Step 3: Run test to verify it passes (or surfaces a real issue)**
 
-Run: `pnpm test -- src/domain/graph/migration.examples.test.ts`
+Run: `npm test -- src/domain/graph/migration.examples.test.ts`
 Expected: PASS for every fixture. If a fixture surfaces a critical issue, this is a real bug — go back to Task 6 / Task 4 and fix the underlying mapping before continuing.
 
 - [ ] **Step 4: Run full suite**
 
-Run: `pnpm test && pnpm typecheck`
+Run: `npm test && npm run typecheck`
 Expected: green.
 
 - [ ] **Step 5: Commit**
@@ -2267,7 +2267,7 @@ describe('GraphInspector', () => {
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `pnpm test -- src/components/devtools/GraphInspector.test.tsx`
+Run: `npm test -- src/components/devtools/GraphInspector.test.tsx`
 Expected: FAIL — `Cannot find module './GraphInspector'`.
 
 - [ ] **Step 3: Implement the inspector**
@@ -2329,7 +2329,7 @@ export function GraphInspector({ pattern }: GraphInspectorProps) {
 
 - [ ] **Step 4: Run inspector test**
 
-Run: `pnpm test -- src/components/devtools/GraphInspector.test.tsx`
+Run: `npm test -- src/components/devtools/GraphInspector.test.tsx`
 Expected: PASS (2 tests).
 
 - [ ] **Step 5: Mount inspector behind a URL flag**
@@ -2351,7 +2351,7 @@ And inside the component return (assumed to be a fragment or container — match
 
 - [ ] **Step 6: Smoke test the build**
 
-Run: `pnpm typecheck && pnpm build`
+Run: `npm run typecheck && npm run build`
 Expected: production build succeeds.
 
 - [ ] **Step 7: Commit**
@@ -2374,12 +2374,12 @@ Open `package.json`. Change `"version": "0.2.0"` to `"version": "0.3.0-alpha.0"`
 
 - [ ] **Step 2: Run the entire test suite from a clean slate**
 
-Run: `pnpm test --run`
+Run: `npm test`
 Expected: all suites pass with no skipped or `.only` markers. Coverage stays >= 80 % across `src/domain/graph/`, `src/domain/validation/graph.ts`, and `src/stores/documentStore.ts`.
 
 - [ ] **Step 3: Manual demo (recorded for the PR description)**
 
-Run `pnpm tauri dev`, then in the running app:
+Run `npm run tauri dev`, then in the running app:
 
 1. Open an existing `.wzor` v2 file via the standard file menu.
 2. Use the existing rectangular editor briefly to confirm no v2 regression.
@@ -2427,9 +2427,9 @@ gh pr create --draft --base master --title "feat: Phase 1 — multigraph foundat
 - Dev-only GraphInspector behind `?devtools`
 
 ## Test plan
-- [x] pnpm test --run (all green)
-- [x] pnpm typecheck (clean)
-- [x] pnpm build (clean)
+- [x] npm test (all green)
+- [x] npm run typecheck (clean)
+- [x] npm run build (clean)
 - [x] Manual: open every example/*.wzor, see migration in GraphInspector
 EOF
 )"

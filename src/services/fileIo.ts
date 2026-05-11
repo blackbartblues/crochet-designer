@@ -125,3 +125,36 @@ export async function loadPatternFromPath(
     return { kind: 'error', error: toFileError(err) };
   }
 }
+
+// ===== V3 Persistence =====
+
+import type { Pattern as PatternV3 } from '../domain/graph/types';
+import { parsePatternAsV3 } from '../domain/validation';
+import { serializePatternV3 } from '../domain/graph/schema';
+
+/** Load any-version .wzor file from disk and return the v3 representation. */
+export async function loadPatternAsV3FromPath(
+  path: string,
+): Promise<IoResult<{ pattern: PatternV3; path: string }>> {
+  try {
+    const text = await readTextFile(path);
+    const pattern = parsePatternAsV3(text);
+    return { kind: 'ok', value: { pattern, path } };
+  } catch (err) {
+    return { kind: 'error', error: toFileError(err) };
+  }
+}
+
+/** Save a v3 pattern to disk at the given path. Does not show a dialog. */
+export async function savePatternV3ToPath(
+  pattern: PatternV3,
+  path: string,
+): Promise<IoResult<string>> {
+  try {
+    const json = serializePatternV3(pattern);
+    await writeTextFile(path, json);
+    return { kind: 'ok', value: path };
+  } catch (err) {
+    return { kind: 'error', error: toFileError(err) };
+  }
+}

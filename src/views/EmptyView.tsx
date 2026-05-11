@@ -7,7 +7,9 @@ import { EmptyState } from '../components/empty/EmptyState';
 import { ConfirmDialog } from '../components/dialogs/ConfirmDialog';
 import { useRecentStore } from '../stores/recentStore';
 import { usePatternStore } from '../stores/patternStore';
+import { useDocumentStore } from '../stores/documentStore';
 import { loadPatternFromPath } from '../services/fileIo';
+import { emptyPatternV3 } from '../domain/graph/build';
 
 interface EmptyViewProps {
   onNew?: () => void;
@@ -41,8 +43,17 @@ export function EmptyView({ onNew, onOpen, onOpenSettings, onOpenShortcuts }: Em
   const entries = useRecentStore((s) => s.entries);
   const removeRecent = useRecentStore((s) => s.remove);
   const loadPattern = usePatternStore((s) => s.loadPattern);
+  const loadGraphPattern = useDocumentStore((s) => s.loadGraphPattern);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handleCreateRadial = () => {
+    const pattern = emptyPatternV3({
+      title: { pl: 'Nowy wzór', en: 'New pattern' },
+      author: '',
+    });
+    loadGraphPattern(pattern);
+  };
 
   const handleLoadRecent = async (path: string) => {
     setErrorMessage(null);
@@ -74,6 +85,27 @@ export function EmptyView({ onNew, onOpen, onOpenSettings, onOpenShortcuts }: Em
         {...(onOpenShortcuts ? { onOpenShortcuts } : {})}
       />
       <EmptyState onNew={onNew} onOpen={onOpen} recentCards={recentCards} />
+      <button
+        type="button"
+        onClick={handleCreateRadial}
+        style={{
+          position: 'fixed',
+          bottom: 48,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          padding: '8px 16px',
+          background: '#5a4730',
+          color: '#fff',
+          border: 'none',
+          borderRadius: 4,
+          cursor: 'pointer',
+          fontFamily: 'Georgia, serif',
+          fontStyle: 'italic',
+          fontSize: '14px',
+        }}
+      >
+        Stwórz wzór radialny
+      </button>
       <Statusbar message={t('status.ready')} recentCount={entries.length} />
 
       {errorMessage && (

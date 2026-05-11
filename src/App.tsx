@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { SvgSprite } from './icons/SvgSprite';
 import { EditorView } from './views/EditorView';
 import { EmptyView } from './views/EmptyView';
+import { GraphEditorView } from './views/GraphEditorView';
 import { ConfirmDialog } from './components/dialogs/ConfirmDialog';
 import { SettingsDialog } from './components/dialogs/SettingsDialog';
 import { ShortcutsDialog } from './components/dialogs/ShortcutsDialog';
@@ -25,6 +26,7 @@ export default function App() {
   const loadPattern = usePatternStore((s) => s.loadPattern);
   const hydrateRecents = useRecentStore((s) => s.hydrate);
   const addRecent = useRecentStore((s) => s.add);
+  const documentMode = useDocumentStore((s) => s.mode);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -65,7 +67,9 @@ export default function App() {
   return (
     <>
       <SvgSprite />
-      {pattern ? (
+      {documentMode === 'graph' ? (
+        <GraphEditorView />
+      ) : pattern ? (
         <EditorView
           onOpenSettings={() => setIsSettingsOpen(true)}
           onOpenShortcuts={() => setIsShortcutsOpen(true)}

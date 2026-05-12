@@ -14,7 +14,6 @@ interface RecentCardData {
 interface EmptyStateProps {
   onNew?: () => void;
   onOpen?: () => void;
-  onNewRadial?: () => void;
   recentCards?: readonly RecentCardData[];
 }
 
@@ -22,7 +21,7 @@ const PLACEHOLDER_THUMB = `repeating-linear-gradient(45deg,
   var(--yarn-cream) 0, var(--yarn-cream) 10px,
   var(--bg-sunken) 10px, var(--bg-sunken) 20px)`;
 
-export function EmptyState({ onNew, onOpen, onNewRadial, recentCards = [] }: EmptyStateProps) {
+export function EmptyState({ onNew, onOpen, recentCards = [] }: EmptyStateProps) {
   const { t } = useTranslation();
 
   return (
@@ -40,27 +39,15 @@ export function EmptyState({ onNew, onOpen, onNewRadial, recentCards = [] }: Emp
         <div className="empty-actions">
           <button className="btn-primary" onClick={onNew}>
             <Icon name="ui-file-new" size="md" />
-            {t('empty.createNew')}
+            Stwórz nowy wzór PDF
           </button>
-          {onNewRadial && (
-            <button
-              className="btn-primary"
-              onClick={onNewRadial}
-              style={{ background: 'var(--accent-rust, #5a4730)' }}
-              title="Hexagon, granny square, motif (Pattern v3 + PDF export)"
-            >
-              <Icon name="ui-file-new" size="md" />
-              Stwórz wzór radialny
-            </button>
-          )}
           <button className="btn-secondary" onClick={onOpen}>
             <Icon name="ui-folder-open" size="md" />
             {t('empty.openFromDisk')}
           </button>
         </div>
         <p style={{ marginTop: 12, fontSize: 12, color: 'var(--text-muted, #7a6347)', fontStyle: 'italic', textAlign: 'center' }}>
-          Wzór radialny → nowy node graph editor z eksportem PDF.<br/>
-          Wzór prostokątny → klasyczny edytor siatkowy (legacy v2).
+          Edytor PDF z gotowymi sekcjami (tytuł, copyright, informacje, wzór, zdjęcia, special stitches).
         </p>
 
         {recentCards.length > 0 && (

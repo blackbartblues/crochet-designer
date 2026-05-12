@@ -8,8 +8,9 @@ import { ConfirmDialog } from '../components/dialogs/ConfirmDialog';
 import { useRecentStore } from '../stores/recentStore';
 import { usePatternStore } from '../stores/patternStore';
 import { useDocumentStore } from '../stores/documentStore';
+import { usePdfDocumentStore } from '../stores/pdfDocumentStore';
 import { loadPatternFromPath } from '../services/fileIo';
-import { emptyPatternV3 } from '../domain/graph/build';
+import { emptyPdfDocument } from '../pdf/document/build';
 
 interface EmptyViewProps {
   onNew?: () => void;
@@ -38,21 +39,21 @@ function relativeDate(iso: string, t: TFunction): string {
   return t('time.years', { count: Math.floor(diffDay / 365) });
 }
 
-export function EmptyView({ onNew, onOpen, onOpenSettings, onOpenShortcuts }: EmptyViewProps) {
+export function EmptyView({ onOpen, onOpenSettings, onOpenShortcuts }: EmptyViewProps) {
   const { t } = useTranslation();
   const entries = useRecentStore((s) => s.entries);
   const removeRecent = useRecentStore((s) => s.remove);
   const loadPattern = usePatternStore((s) => s.loadPattern);
-  const loadGraphPattern = useDocumentStore((s) => s.loadGraphPattern);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleCreateRadial = () => {
-    const pattern = emptyPatternV3({
+  const handleNewPdf = () => {
+    const doc = emptyPdfDocument({
       title: { pl: 'Nowy wzór', en: 'New pattern' },
       author: '',
     });
-    loadGraphPattern(pattern);
+    usePdfDocumentStore.getState().setDocument(doc);
+    useDocumentStore.getState().setMode('pdf-builder');
   };
 
   const handleLoadRecent = async (path: string) => {
@@ -84,7 +85,7 @@ export function EmptyView({ onNew, onOpen, onOpenSettings, onOpenShortcuts }: Em
         {...(onOpenSettings ? { onOpenSettings } : {})}
         {...(onOpenShortcuts ? { onOpenShortcuts } : {})}
       />
-      <EmptyState onNew={onNew} onOpen={onOpen} onNewRadial={handleCreateRadial} recentCards={recentCards} />
+      <EmptyState onNew={handleNewPdf} onOpen={onOpen} recentCards={recentCards} />
       <Statusbar message={t('status.ready')} recentCount={entries.length} />
 
       {errorMessage && (

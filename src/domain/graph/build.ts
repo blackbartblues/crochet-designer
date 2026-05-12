@@ -6,6 +6,7 @@ import type {
   Pattern,
   PatternMeta,
   PdfSectionConfig,
+  Position,
   Stitch,
   StitchId,
   StitchTypeRef,
@@ -29,7 +30,7 @@ const DEFAULT_PDF_SECTIONS: PdfSectionConfig[] = [
 export interface StitchOverrides {
   colorRef?: string;
   round?: number;
-  position?: { x: number; y: number };
+  position?: Position;
 }
 
 export function newStitch(

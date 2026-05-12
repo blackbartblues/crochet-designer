@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { Pattern as PatternV3 } from '../domain/graph/types';
 
-export type DocumentMode = 'rectangular' | 'graph';
+export type DocumentMode = 'rectangular' | 'graph' | 'pdf-builder';
 
 interface DocumentStore {
   mode: DocumentMode;

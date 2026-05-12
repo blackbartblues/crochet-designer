@@ -39,13 +39,16 @@ export function EmptyState({ onNew, onOpen, recentCards = [] }: EmptyStateProps)
         <div className="empty-actions">
           <button className="btn-primary" onClick={onNew}>
             <Icon name="ui-file-new" size="md" />
-            {t('empty.createNew')}
+            Stwórz nowy wzór PDF
           </button>
           <button className="btn-secondary" onClick={onOpen}>
             <Icon name="ui-folder-open" size="md" />
             {t('empty.openFromDisk')}
           </button>
         </div>
+        <p style={{ marginTop: 12, fontSize: 12, color: 'var(--text-muted, #7a6347)', fontStyle: 'italic', textAlign: 'center' }}>
+          Edytor PDF z gotowymi sekcjami (tytuł, copyright, informacje, wzór, zdjęcia, special stitches).
+        </p>
 
         {recentCards.length > 0 && (
           <div className="recent-section">

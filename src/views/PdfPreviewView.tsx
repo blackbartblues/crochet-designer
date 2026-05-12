@@ -1,12 +1,13 @@
-import type { Pattern } from '../domain/graph/types';
-// import { PatternDocument } from '../pdf/PatternDocument';
+import { PDFViewer } from '@react-pdf/renderer';
+import type { PdfDocument } from '../pdf/document/types';
+import { PdfDocumentRenderer } from '../pdf/PdfDocumentRenderer';
 
 interface Props {
-  pattern: Pattern;
+  document: PdfDocument;
   onClose: () => void;
 }
 
-export function PdfPreviewView({ pattern, onClose }: Props) {
+export function PdfPreviewView({ document, onClose }: Props) {
   return (
     <div
       style={{
@@ -30,14 +31,15 @@ export function PdfPreviewView({ pattern, onClose }: Props) {
           color: '#3a2f1d',
         }}
       >
-        <span>PDF Preview — {pattern.meta.title.en || pattern.meta.title.pl}</span>
+        <span>PDF Preview — {document.meta.title.en || document.meta.title.pl}</span>
         <button type="button" onClick={onClose}>
           Close
         </button>
       </header>
-      <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3a2f1d' }}>
-        {/* TODO: Task 5 will restore PDF preview with PdfDocumentRenderer */}
-        <p>PDF preview temporarily disabled during refactoring</p>
+      <div style={{ flex: 1, minHeight: 0 }}>
+        <PDFViewer width="100%" height="100%" showToolbar>
+          <PdfDocumentRenderer document={document} />
+        </PDFViewer>
       </div>
     </div>
   );

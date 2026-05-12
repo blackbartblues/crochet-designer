@@ -3,8 +3,6 @@ import { GraphCanvas } from './canvas/GraphCanvas';
 import { NodePalette } from './NodePalette';
 import { Inspector } from './Inspector';
 import { CustomStitchModal } from './CustomStitchModal';
-import { PdfPreviewView } from '../views/PdfPreviewView';
-import { exportPatternPdf } from '../pdf/exportPdf';
 import { usePatternGraphStore } from '../stores/patternGraphStore';
 import { useDocumentStore } from '../stores/documentStore';
 import { newStitch } from '../domain/graph/build';
@@ -20,8 +18,6 @@ export function GraphEditorShell() {
   const selectStitch = usePatternGraphStore((s) => s.selectStitch);
   const switchToRectMode = () => useDocumentStore.getState().setMode('rectangular');
   const [showCustomModal, setShowCustomModal] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
-  const [exportStatus, setExportStatus] = useState<string | null>(null);
 
   function handlePaletteSelect(typeRef: StitchTypeRef) {
     if (!pattern) return;
@@ -77,25 +73,7 @@ export function GraphEditorShell() {
           crochet-designer
         </span>
         <span style={{ flex: 1 }} />
-        <button
-          type="button"
-          onClick={() => setShowPreview(true)}
-        >
-          Preview PDF
-        </button>
-        <button
-          type="button"
-          onClick={async () => {
-            if (!pattern) return;
-            const r = await exportPatternPdf(pattern);
-            if (r.kind === 'ok') setExportStatus(`Saved to ${r.path}`);
-            else if (r.kind === 'error') setExportStatus(`Error: ${r.message}`);
-            else setExportStatus(null);
-            setTimeout(() => setExportStatus(null), 4000);
-          }}
-        >
-          Export PDF
-        </button>
+        {/* Export moved to PdfBuilderView */}
         <button type="button" onClick={() => { try { switchToRectMode(); } catch { /* no-op when no v2 pattern */ } }}>
           Switch to rectangular
         </button>
@@ -135,28 +113,6 @@ export function GraphEditorShell() {
           onCancel={() => setShowCustomModal(false)}
           onCreate={handleCustomCreated}
         />
-      )}
-      {showPreview && pattern && (
-        <PdfPreviewView pattern={pattern} onClose={() => setShowPreview(false)} />
-      )}
-      {exportStatus && (
-        <div
-          style={{
-            position: 'fixed',
-            bottom: 40,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: editorTheme.color.accentHi,
-            border: `1px solid ${editorTheme.color.accent}`,
-            padding: '8px 16px',
-            borderRadius: 4,
-            fontSize: 12,
-            color: editorTheme.color.ink,
-            zIndex: 9999,
-          }}
-        >
-          {exportStatus}
-        </div>
       )}
     </div>
   );

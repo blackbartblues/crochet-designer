@@ -1,8 +1,10 @@
+import { PDFViewer } from '@react-pdf/renderer';
 import { usePdfDocumentStore } from '../stores/pdfDocumentStore';
 import { newSection } from '../pdf/document/build';
 import type { SectionKind } from '../pdf/document/types';
 import { SectionOutline } from './SectionOutline';
 import { SectionEditorRouter } from './SectionEditorRouter';
+import { PdfDocumentRenderer } from '../pdf/PdfDocumentRenderer';
 
 export function PdfBuilderView() {
   const document = usePdfDocumentStore((s) => s.document);
@@ -54,19 +56,15 @@ export function PdfBuilderView() {
         <div style={{ flex: 1, overflow: 'auto', minWidth: 0 }}>
           <SectionEditorRouter section={selected} />
         </div>
-        <div
-          style={{
-            width: 360,
-            background: '#fafaf7',
-            borderLeft: '1px solid #b8a87a',
-            padding: 12,
-            fontFamily: 'Georgia, serif',
-            color: '#7a6347',
-            fontStyle: 'italic',
-            fontSize: 12,
-          }}
-        >
-          Live PDF preview (Task 11).
+        <div style={{ width: 360, background: '#fafaf7', borderLeft: '1px solid #b8a87a', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ padding: '8px 12px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#5a4730', fontSize: 12, borderBottom: '1px solid #b8a87a' }}>
+            Live preview
+          </div>
+          <div style={{ flex: 1, minHeight: 0 }}>
+            <PDFViewer width="100%" height="100%" showToolbar={false}>
+              <PdfDocumentRenderer document={document} />
+            </PDFViewer>
+          </div>
         </div>
       </div>
     </div>

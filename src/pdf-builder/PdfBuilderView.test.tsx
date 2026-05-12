@@ -1,8 +1,16 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { PdfBuilderView } from './PdfBuilderView';
 import { usePdfDocumentStore } from '../stores/pdfDocumentStore';
 import { emptyPdfDocument } from '../pdf/document/build';
+
+vi.mock('@react-pdf/renderer', async (importOriginal) => {
+  const actual = (await importOriginal()) as Record<string, unknown>;
+  return {
+    ...actual,
+    PDFViewer: ({ children }: { children: React.ReactNode }) => <div data-testid="pdf-viewer-mock">{children}</div>,
+  };
+});
 
 describe('PdfBuilderView', () => {
   beforeEach(() => {

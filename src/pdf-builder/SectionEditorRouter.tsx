@@ -2,6 +2,9 @@ import type { Section } from '../pdf/document/types';
 import { TitleSectionEditor } from './editors/TitleSectionEditor';
 import { ThanksSectionEditor } from './editors/ThanksSectionEditor';
 import { InformationSectionEditor } from './editors/InformationSectionEditor';
+import { PhotosSectionEditor } from './editors/PhotosSectionEditor';
+import { SpecialStitchesSectionEditor } from './editors/SpecialStitchesSectionEditor';
+import { TextSectionEditor } from './editors/TextSectionEditor';
 
 interface Props {
   section: Section | null;
@@ -19,6 +22,9 @@ export function SectionEditorRouter({ section }: Props) {
     case 'title':       return <TitleSectionEditor section={section} />;
     case 'thanks':      return <ThanksSectionEditor section={section} />;
     case 'information': return <InformationSectionEditor section={section} />;
+    case 'photos':      return <PhotosSectionEditor section={section} />;
+    case 'special':     return <SpecialStitchesSectionEditor section={section} />;
+    case 'text':        return <TextSectionEditor section={section} />;
     default:
       return (
         <div style={{ padding: 24, fontFamily: 'Georgia, serif', color: '#3a2f1d' }}>

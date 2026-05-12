@@ -84,28 +84,7 @@ export function EmptyView({ onNew, onOpen, onOpenSettings, onOpenShortcuts }: Em
         {...(onOpenSettings ? { onOpenSettings } : {})}
         {...(onOpenShortcuts ? { onOpenShortcuts } : {})}
       />
-      <EmptyState onNew={onNew} onOpen={onOpen} recentCards={recentCards} />
-      <button
-        type="button"
-        onClick={handleCreateRadial}
-        style={{
-          position: 'fixed',
-          bottom: 48,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          padding: '8px 16px',
-          background: '#5a4730',
-          color: '#fff',
-          border: 'none',
-          borderRadius: 4,
-          cursor: 'pointer',
-          fontFamily: 'Georgia, serif',
-          fontStyle: 'italic',
-          fontSize: '14px',
-        }}
-      >
-        Stwórz wzór radialny
-      </button>
+      <EmptyState onNew={onNew} onOpen={onOpen} onNewRadial={handleCreateRadial} recentCards={recentCards} />
       <Statusbar message={t('status.ready')} recentCount={entries.length} />
 
       {errorMessage && (

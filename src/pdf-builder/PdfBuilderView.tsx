@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { PDFViewer } from '@react-pdf/renderer';
 import { usePdfDocumentStore } from '../stores/pdfDocumentStore';
 import { newSection } from '../pdf/document/build';
@@ -5,6 +6,8 @@ import type { SectionKind } from '../pdf/document/types';
 import { SectionOutline } from './SectionOutline';
 import { SectionEditorRouter } from './SectionEditorRouter';
 import { PdfDocumentRenderer } from '../pdf/PdfDocumentRenderer';
+import { exportPdfDocument } from '../pdf/exportPdf';
+import { PdfPreviewView } from '../views/PdfPreviewView';
 
 export function PdfBuilderView() {
   const document = usePdfDocumentStore((s) => s.document);
@@ -12,6 +15,9 @@ export function PdfBuilderView() {
   const select = usePdfDocumentStore((s) => s.selectSection);
   const add = usePdfDocumentStore((s) => s.addSection);
   const remove = usePdfDocumentStore((s) => s.removeSection);
+
+  const [showPreview, setShowPreview] = useState(false);
+  const [exportStatus, setExportStatus] = useState<string | null>(null);
 
   if (!document) {
     return (
@@ -42,8 +48,20 @@ export function PdfBuilderView() {
           {document.meta.title.en || document.meta.title.pl || '(untitled)'}
         </span>
         <span style={{ flex: 1 }} />
-        <button type="button">Preview PDF</button>
-        <button type="button">Export PDF</button>
+        <button type="button" onClick={() => setShowPreview(true)}>Preview PDF</button>
+        <button
+          type="button"
+          onClick={async () => {
+            if (!document) return;
+            const r = await exportPdfDocument(document);
+            if (r.kind === 'ok') setExportStatus(`Saved to ${r.path}`);
+            else if (r.kind === 'error') setExportStatus(`Error: ${r.message}`);
+            else setExportStatus(null);
+            setTimeout(() => setExportStatus(null), 4000);
+          }}
+        >
+          Export PDF
+        </button>
       </header>
       <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
         <SectionOutline
@@ -67,6 +85,29 @@ export function PdfBuilderView() {
           </div>
         </div>
       </div>
+
+      {showPreview && document && (
+        <PdfPreviewView document={document} onClose={() => setShowPreview(false)} />
+      )}
+      {exportStatus && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: 40,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: '#fffcef',
+            border: '1px solid #d4831a',
+            padding: '8px 16px',
+            borderRadius: 4,
+            fontSize: 12,
+            color: '#3a2f1d',
+            zIndex: 9999,
+          }}
+        >
+          {exportStatus}
+        </div>
+      )}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { SvgSprite } from './icons/SvgSprite';
 import { EditorView } from './views/EditorView';
 import { EmptyView } from './views/EmptyView';
 import { GraphEditorView } from './views/GraphEditorView';
+import { PdfBuilderView } from './pdf-builder/PdfBuilderView';
 import { ConfirmDialog } from './components/dialogs/ConfirmDialog';
 import { SettingsDialog } from './components/dialogs/SettingsDialog';
 import { ShortcutsDialog } from './components/dialogs/ShortcutsDialog';
@@ -67,7 +68,9 @@ export default function App() {
   return (
     <>
       <SvgSprite />
-      {documentMode === 'graph' ? (
+      {documentMode === 'pdf-builder' ? (
+        <PdfBuilderView />
+      ) : documentMode === 'graph' ? (
         <GraphEditorView />
       ) : pattern ? (
         <EditorView

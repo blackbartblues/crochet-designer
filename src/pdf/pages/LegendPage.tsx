@@ -1,16 +1,14 @@
 import { Page, Text, View } from '@react-pdf/renderer';
-import type { Pattern } from '../../domain/graph/types';
+import type { CustomStitch } from '../../domain/graph/types';
 import { Heading } from '../components/Heading';
 import { pdfTheme } from '../theme';
 
 interface Props {
-  pattern: Pattern;
+  customStitches: CustomStitch[];
 }
 
-export function LegendPage({ pattern }: Props) {
-  if (pattern.customStitches.length === 0) {
-    return null;
-  }
+export function LegendPage({ customStitches }: Props) {
+  if (customStitches.length === 0) return null;
   return (
     <Page
       size="A4"
@@ -22,15 +20,9 @@ export function LegendPage({ pattern }: Props) {
     >
       <Heading>SPECIAL STITCHES</Heading>
       <View style={{ marginTop: pdfTheme.spacing.section }}>
-        {pattern.customStitches.map((c) => (
+        {customStitches.map((c) => (
           <View key={c.id} style={{ marginBottom: pdfTheme.spacing.section }}>
-            <Text
-              style={{
-                fontFamily: pdfTheme.fonts.accent,
-                fontSize: 13,
-                color: pdfTheme.colors.accent,
-              }}
-            >
+            <Text style={{ fontFamily: pdfTheme.fonts.accent, fontSize: 13, color: pdfTheme.colors.accent }}>
               {c.shortCode} — {c.nameByLanguage.en}
             </Text>
             {c.description && (

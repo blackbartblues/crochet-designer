@@ -1,13 +1,15 @@
 import { Page, Text, View } from '@react-pdf/renderer';
-import type { Pattern } from '../../domain/graph/types';
+import type { TitleSection, PdfDocumentMeta } from '../document/types';
 import { pdfTheme } from '../theme';
 
 interface Props {
-  pattern: Pattern;
+  section: TitleSection;
+  meta: PdfDocumentMeta;
 }
 
-export function TitlePage({ pattern }: Props) {
-  const year = new Date(pattern.meta.designedAt).getFullYear();
+export function TitlePage({ section, meta }: Props) {
+  const title = (section.title ?? meta.title).en || (section.title ?? meta.title).pl;
+  const year = section.showYear ? new Date(meta.designedAt).getFullYear() : null;
   return (
     <Page
       size="A4"
@@ -29,7 +31,7 @@ export function TitlePage({ pattern }: Props) {
             textAlign: 'center',
           }}
         >
-          {pattern.meta.title.en}
+          {title}
         </Text>
         <View style={{ width: 80, height: 1, backgroundColor: pdfTheme.colors.rule, marginVertical: 16 }} />
         <Text
@@ -40,18 +42,20 @@ export function TitlePage({ pattern }: Props) {
             letterSpacing: 2,
           }}
         >
-          design by {pattern.meta.author || 'unknown'}
+          design by {meta.author || 'unknown'}
         </Text>
-        <Text
-          style={{
-            fontFamily: pdfTheme.fonts.body,
-            fontSize: 10,
-            color: pdfTheme.colors.inkSoft,
-            marginTop: 6,
-          }}
-        >
-          {year}
-        </Text>
+        {year !== null && (
+          <Text
+            style={{
+              fontFamily: pdfTheme.fonts.body,
+              fontSize: 10,
+              color: pdfTheme.colors.inkSoft,
+              marginTop: 6,
+            }}
+          >
+            {year}
+          </Text>
+        )}
       </View>
     </Page>
   );

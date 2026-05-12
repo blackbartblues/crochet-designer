@@ -1,6 +1,5 @@
-import { PDFViewer } from '@react-pdf/renderer';
 import type { Pattern } from '../domain/graph/types';
-import { PatternDocument } from '../pdf/PatternDocument';
+// import { PatternDocument } from '../pdf/PatternDocument';
 
 interface Props {
   pattern: Pattern;
@@ -36,10 +35,9 @@ export function PdfPreviewView({ pattern, onClose }: Props) {
           Close
         </button>
       </header>
-      <div style={{ flex: 1, minHeight: 0 }}>
-        <PDFViewer width="100%" height="100%" showToolbar>
-          <PatternDocument pattern={pattern} />
-        </PDFViewer>
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3a2f1d' }}>
+        {/* TODO: Task 5 will restore PDF preview with PdfDocumentRenderer */}
+        <p>PDF preview temporarily disabled during refactoring</p>
       </div>
     </div>
   );

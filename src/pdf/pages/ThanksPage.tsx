@@ -1,13 +1,18 @@
 import { Page, Text, View } from '@react-pdf/renderer';
-import type { Pattern } from '../../domain/graph/types';
+import type { ThanksSection, PdfDocumentMeta } from '../document/types';
 import { Heading } from '../components/Heading';
 import { pdfTheme } from '../theme';
 
 interface Props {
-  pattern: Pattern;
+  section: ThanksSection;
+  meta: PdfDocumentMeta;
 }
 
-export function ThanksPage({ pattern }: Props) {
+export function ThanksPage({ section, meta }: Props) {
+  const copyright =
+    section.copyrightOverride ??
+    meta.copyrightLine ??
+    `© ${new Date(meta.designedAt).getFullYear()} ${meta.author}. This pattern is for private use only. It's not allowed to copy, sell or distribute in any way, either wholly or in part.`;
   return (
     <Page
       size="A4"
@@ -29,8 +34,7 @@ export function ThanksPage({ pattern }: Props) {
             maxWidth: 380,
           }}
         >
-          Thank you for supporting my small business.
-          {'\n'}I hope you'll enjoy this pattern as much as I did making it.
+          {section.message}
         </Text>
         <Text
           style={{
@@ -43,10 +47,9 @@ export function ThanksPage({ pattern }: Props) {
             lineHeight: 1.5,
           }}
         >
-          {pattern.meta.copyrightLine ??
-            `© ${new Date(pattern.meta.designedAt).getFullYear()} ${pattern.meta.author}. This pattern is for private use only. It's not allowed to copy, sell or distribute in any way, either wholly or in part.`}
+          {copyright}
         </Text>
-        {pattern.meta.socialTag && (
+        {meta.socialTag && (
           <Text
             style={{
               fontFamily: pdfTheme.fonts.accent,
@@ -55,7 +58,7 @@ export function ThanksPage({ pattern }: Props) {
               marginTop: 24,
             }}
           >
-            tag {pattern.meta.socialTag}
+            tag {meta.socialTag}
           </Text>
         )}
       </View>
